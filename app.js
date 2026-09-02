@@ -207,6 +207,12 @@
          dark hero the strip therefore stayed cream and read as a pale bar
          above the photograph, so the page root follows the hero too. */
       document.documentElement.classList.toggle('at-hero', e.isIntersecting);
+      /* At scroll 0 nothing has scrolled into the status strip yet, so iOS
+         tints it from the theme-color meta rather than from html's background:
+         colouring html was not enough and the strip stayed cream above the
+         dark hero. */
+      var tc = document.querySelector('meta[name="theme-color"]');
+      if (tc) tc.setAttribute('content', e.isIntersecting ? '#13191C' : '#F4F2EC');
     }); }, { rootMargin: '-45% 0px 0px 0px' }).observe(hero);
     var boka = document.getElementById('boka');
     if (boka) new IntersectionObserver(function (es) { es.forEach(function (e) { body.classList.toggle('at-book', e.isIntersecting); }); }, { rootMargin: '0px 0px -25% 0px' }).observe(boka);

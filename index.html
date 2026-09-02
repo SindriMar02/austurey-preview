@@ -12,7 +12,7 @@
 <link rel="preload" href="assets/fonts/Switzer-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
 <link rel="apple-touch-icon" href="assets/img/favicon-180.png">
-<link rel="stylesheet" href="styles.css?v=9094f77e">
+<link rel="stylesheet" href="styles.css?v=3ad10428">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"LodgingBusiness","@id":"https://austurey.is/#business","name":"Austurey Gisting","url":"https://austurey.is","email":"austurey@austurey.is","telephone":"+354 773 0378","address":{"@type":"PostalAddress","streetAddress":"Austurey 1","addressLocality":"Bláskógabyggð","postalCode":"840","addressCountry":"IS"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"9.7","bestRating":"10","reviewCount":"390"},"amenityFeature":[{"@type":"LocationFeatureSpecification","name":"Fishing","value":true},{"@type":"LocationFeatureSpecification","name":"EV charger","value":true},{"@type":"LocationFeatureSpecification","name":"Free parking","value":true}],"containsPlace":[{"@type":"Accommodation","name":"Austurey Lakefront Villa","floorSize":{"@type":"QuantitativeValue","value":184,"unitCode":"MTK"},"numberOfBedrooms":4,"occupancy":{"@type":"QuantitativeValue","maxValue":8},"amenityFeature":[{"@type":"LocationFeatureSpecification","name":"Sauna","value":true},{"@type":"LocationFeatureSpecification","name":"Hot tub","value":true},{"@type":"LocationFeatureSpecification","name":"Kayaks","value":true}]},{"@type":"Accommodation","name":"Austurey Cottage","occupancy":{"@type":"QuantitativeValue","maxValue":2},"amenityFeature":[{"@type":"LocationFeatureSpecification","name":"Lake view","value":true},{"@type":"LocationFeatureSpecification","name":"Terrace","value":true}]}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is the fishing permit really included?","acceptedAnswer":{"@type":"Answer","text":"Guests who book the Lakefront Villa directly through Austurey receive complimentary fishing permits for Lake Apavatn. Cottage guests who book direct get a special discount on permits. Rods and kayaks are on site."}},{"@type":"Question","name":"When is the fishing season?","acceptedAnswer":{"@type":"Answer","text":"Lake Apavatn from 1 February to 10 October; the Hólaá river from 1 April to 24 September. River permits are limited each day, so book those in advance."}},{"@type":"Question","name":"Can we see the northern lights?","acceptedAnswer":{"@type":"Answer","text":"From late August until April, on clear nights, from the cottages and the villa. There is very little light around the farm."}},{"@type":"Question","name":"Is there a restaurant?","acceptedAnswer":{"@type":"Answer","text":"No. Every cottage has a kitchenette and the villa a full kitchen; Laugarvatn, ten kilometres away, has restaurants and shops."}},{"@type":"Question","name":"Can I bring a pet?","acceptedAnswer":{"@type":"Answer","text":"Pets are not allowed."}}]}]}</script>
 </head>
 <body class="at-hero" data-ground="day">
@@ -207,22 +207,20 @@
       <h2 class="h2" data-reveal data-split="lines">Pick your nights.</h2>
       <p class="book_lead rev">Booked straight with the farm, in their own checkout. Villa guests get the fishing permit included; cottage guests a discount on it.</p>
       <div class="bk rev" id="bk">
-        <div class="bk_cal">
-          <div class="bk_head">
-            <button class="bk_navbtn" id="calPrev" type="button" aria-label="Previous month">←</button>
-            <div class="bk_month" id="calMonth" aria-live="polite"></div>
-            <button class="bk_navbtn" id="calNext" type="button" aria-label="Next month">→</button>
-          </div>
-          <div class="bk_dow" id="calDow"></div>
-          <div class="bk_grid" id="calGrid"></div>
-        </div>
+        <div class="bk_cal" id="bkCal"></div>
         <div class="bk_side">
           <div class="bk_which" role="group" aria-label="Which stay">
-            <button type="button" class="bk_w is-on" data-prop="57635" data-name="a cottage">A cottage, for two</button>
-            <button type="button" class="bk_w" data-prop="197629" data-name="the villa">The villa, for eight</button>
+            <button type="button" class="bk_w is-on" data-prop="57635" data-name="a cottage" data-sleeps="2">A cottage, for two</button>
+            <button type="button" class="bk_w" data-prop="197629" data-name="the villa" data-sleeps="8">The villa, for eight</button>
           </div>
-          <div class="bk_field"><span class="bk_label">Arrival</span><span class="bk_value" id="outStart">Select a date</span></div>
-          <div class="bk_field"><span class="bk_label">Departure</span><span class="bk_value" id="outEnd">Select a date</span></div>
+          <div class="bk_guests">
+            <span class="bk_label">Guests</span>
+            <div class="bk_step">
+              <button type="button" data-g="-1" aria-label="Fewer guests"><i class="bk_sign"></i></button>
+              <span aria-live="polite"><b id="bkG">2</b><em> of <span id="bkGmax">2</span></em></span>
+              <button type="button" data-g="1" aria-label="More guests"><i class="bk_sign bk_sign--plus"></i></button>
+            </div>
+          </div>
           <p class="bk_sum" id="outSum">Choose your arrival night to begin.</p>
           <a class="btn" id="bkGo" href="https://property.godo.is/booking2.php?propid=57635&referer=austurey.is" target="_blank" rel="noopener" aria-disabled="true">Continue to Austurey's checkout</a>
           <p class="bk_note">Opens the farm's own booking page. Availability and the exact rate are confirmed there.</p>
@@ -293,6 +291,7 @@
 <script src="assets/vendor/gsap.min.js"></script>
 <script src="assets/vendor/ScrollTrigger.min.js"></script>
 <script src="assets/vendor/lenis.min.js"></script>
-<script src="app.js?v=1338e87d"></script>
+<script src="assets/vendor/staypicker.js" defer></script>
+<script src="app.js?v=3e993af7"></script>
 </body>
 </html>

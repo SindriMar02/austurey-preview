@@ -223,62 +223,63 @@
   document.querySelectorAll('[data-ground]').forEach(function (s) { if (s !== body && s.dataset.ground) io.observe(s); });
   document.querySelectorAll('section:not([data-ground])').forEach(function (s) { s.dataset.groundDefault = 'day'; io.observe(s); });
 
-  /* ---------- range calendar → their Godo checkout ---------- */
+  /* ---------- the stay picker → their Godo checkout ---------- */
+  /* Was a bespoke calendar: it paged months and drew a range, but it enforced
+     no minimum stay, showed no preview of the range being drawn, had no party
+     control, and the Continue link carried none of the chosen dates into Godo.
+     It now runs the same picker the other builds carry, and the dates travel. */
   (function calendar() {
-    var grid = document.getElementById('calGrid'); if (!grid) return;
-    var monthEl = document.getElementById('calMonth');
-    document.getElementById('calDow').innerHTML = ['Mo','Tu','We','Th','Fr','Sa','Su'].map(function (d) { return '<div>' + d + '</div>'; }).join('');
-    var outS = document.getElementById('outStart'), outE = document.getElementById('outEnd');
+    var mount = document.getElementById('bkCal');
+    if (!mount || !window.createStayPicker) return;
     var outSum = document.getElementById('outSum'), go = document.getElementById('bkGo');
-    var prev = document.getElementById('calPrev'), next = document.getElementById('calNext');
     var which = Array.prototype.slice.call(document.querySelectorAll('.bk_w'));
-    var MON = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-    var today = new Date(); today.setHours(0, 0, 0, 0);
-    var view = new Date(today.getFullYear(), today.getMonth(), 1);
-    var monthEnd = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-    if ((monthEnd - today) / 86400000 < 7) view.setMonth(view.getMonth() + 1);
-    var start = null, end = null, prop = '57635', propName = 'a cottage';
-    function fmt(d) { return d ? MON[d.getMonth()].slice(0, 3) + ' ' + d.getDate() + ', ' + d.getFullYear() : null; }
-    function paint() {
-      var old = monthEl.querySelector('span');
-      if (old) { old.classList.add('is-out'); setTimeout(function () { old.remove(); }, 200); }
-      var sp = document.createElement('span'); sp.textContent = MON[view.getMonth()] + ' ' + view.getFullYear(); monthEl.appendChild(sp);
-      prev.disabled = view <= new Date(today.getFullYear(), today.getMonth(), 1);
-      var lead = (new Date(view).getDay() + 6) % 7;
-      var cur = new Date(view); cur.setDate(1 - lead);
-      var out = [];
-      for (var i = 0; i < 42; i++) {
-        var d = new Date(cur); var cls = ['bk_day'];
-        if (start && end && d > start && d < end) cls.push('in-range');
-        if (start && +d === +start) cls.push(end ? 'is-start' : 'is-start is-only');
-        if (end && +d === +end) cls.push('is-end');
-        out.push('<button type="button" class="' + cls.join(' ') + '"' + (d.getMonth() !== view.getMonth() ? ' data-out' : '') + (d < today ? ' disabled' : '') + (+d === +today ? ' data-today' : '') + ' data-d="' + d.toISOString().slice(0, 10) + '">' + d.getDate() + '</button>');
-        cur.setDate(cur.getDate() + 1);
-      }
-      grid.innerHTML = out.join('');
+    var gEl = document.getElementById('bkG'), gMax = document.getElementById('bkGmax');
+    var prop = '57635', propName = 'a cottage', guests = 2;
+    var L = {
+      months: ['January','February','March','April','May','June','July','August','September','October','November','December'],
+      weekdays: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+      checkIn: 'Arrival', checkOut: 'Departure', pickDate: 'Pick a date', afterCheckIn: 'After arrival',
+      night: 'night', nights: 'nights', prevMonth: 'Previous month', nextMonth: 'Next month',
+      empty: 'Pick an arrival, then a departure. Two nights is the shortest stay.',
+      minStay: function (d) { return 'Two nights is the shortest stay, so the earliest departure is ' + d + '.'; },
+      chosen: function (a, b) { return a + ' to ' + b + '.'; },
+    };
+    var picker = window.createStayPicker({ mount: mount, prefix: 'au-stay', minStay: 2, L: L, onChange: sync });
+
+    function sleeps() { var on = which.filter(function (w) { return w.classList.contains('is-on'); })[0]; return parseInt(on.dataset.sleeps, 10) || 2; }
+    function syncGuests() {
+      guests = Math.min(guests, sleeps());
+      gEl.textContent = guests; gMax.textContent = sleeps();
+      document.querySelector('[data-g="-1"]').disabled = guests <= 1;
+      document.querySelector('[data-g="1"]').disabled = guests >= sleeps();
     }
     function sync() {
-      outS.textContent = fmt(start) || 'Select a date';
-      outE.textContent = fmt(end) || 'Select a date';
-      if (!start) outSum.textContent = 'Choose your arrival night to begin.';
-      else if (!end) outSum.textContent = 'Arriving ' + fmt(start) + '. Now choose your departure.';
-      else { var n = Math.round((end - start) / 86400000); outSum.textContent = n + (n === 1 ? ' night' : ' nights') + ' in ' + propName + ', ' + fmt(start) + ' to ' + fmt(end) + '. Availability is confirmed in the farm’s own checkout.'; }
-      go.setAttribute('aria-disabled', String(!(start && end)));
-      go.href = (prop === '57635' ? GODO_COTT : GODO_VILLA);
+      var r = picker.get();
+      if (!r.start) outSum.textContent = 'Choose your arrival night to begin.';
+      else if (!r.end) outSum.textContent = 'Arriving ' + picker.fmtLong(r.start) + '. Now choose your departure.';
+      else outSum.textContent = r.nights + (r.nights === 1 ? ' night' : ' nights') + ' in ' + propName + ', for ' + guests + (guests === 1 ? ' guest' : ' guests') + '. Availability and the exact rate are confirmed in the farm\u2019s own checkout.';
+      go.setAttribute('aria-disabled', String(!(r.start && r.end)));
+      go.textContent = r.nights > 0
+        ? 'Continue with these ' + r.nights + (r.nights === 1 ? ' night' : ' nights')
+        : "Continue to Austurey's checkout";
+      /* The dates leave with the guest. Godo ignores parameters it does not
+         know, so this can only help, and the summary still says plainly that
+         availability is confirmed on their side. */
+      var base = 'https://property.godo.is/booking2.php?propid=' + prop + '&referer=austurey.is';
+      go.href = (r.start && r.end)
+        ? base + '&checkin=' + picker.key(r.start) + '&checkout=' + picker.key(r.end) + '&adults=' + guests
+        : base;
     }
-    grid.addEventListener('click', function (e) {
-      var b = e.target.closest('.bk_day'); if (!b || b.disabled) return;
-      var d = new Date(b.dataset.d + 'T00:00:00');
-      if (!start || (start && end)) { start = d; end = null; }
-      else if (d < start) { start = d; }
-      else if (+d === +start) { start = null; end = null; }
-      else { end = d; }
-      paint(); sync();
+    which.forEach(function (w) {
+      w.addEventListener('click', function () {
+        which.forEach(function (x) { x.classList.toggle('is-on', x === w); });
+        prop = w.dataset.prop; propName = w.dataset.name; syncGuests(); sync();
+      });
     });
-    which.forEach(function (w) { w.addEventListener('click', function () { which.forEach(function (x) { x.classList.toggle('is-on', x === w); }); prop = w.dataset.prop; propName = w.dataset.name; sync(); }); });
-    prev.addEventListener('click', function () { view.setMonth(view.getMonth() - 1); paint(); });
-    next.addEventListener('click', function () { view.setMonth(view.getMonth() + 1); paint(); });
-    paint(); sync();
+    document.querySelectorAll('[data-g]').forEach(function (b) {
+      b.addEventListener('click', function () { guests += parseInt(b.dataset.g, 10); syncGuests(); sync(); });
+    });
+    syncGuests(); sync();
   })();
 
   /* ---------- scrubbed word wave (rest .55, windows overlap) ---------- */

@@ -200,7 +200,14 @@
   (function () {
     var hero = document.querySelector('.hero');
     if (!hero) return;
-    new IntersectionObserver(function (es) { es.forEach(function (e) { body.classList.toggle('at-hero', e.isIntersecting); }); }, { rootMargin: '-45% 0px 0px 0px' }).observe(hero);
+    new IntersectionObserver(function (es) { es.forEach(function (e) {
+      body.classList.toggle('at-hero', e.isIntersecting);
+      /* The status strip is tinted from html's background-color, not from the
+         4px .tintplate: a plate that thin does not win the sampling. Over the
+         dark hero the strip therefore stayed cream and read as a pale bar
+         above the photograph, so the page root follows the hero too. */
+      document.documentElement.classList.toggle('at-hero', e.isIntersecting);
+    }); }, { rootMargin: '-45% 0px 0px 0px' }).observe(hero);
     var boka = document.getElementById('boka');
     if (boka) new IntersectionObserver(function (es) { es.forEach(function (e) { body.classList.toggle('at-book', e.isIntersecting); }); }, { rootMargin: '0px 0px -25% 0px' }).observe(boka);
   })();

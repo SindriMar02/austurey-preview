@@ -360,6 +360,11 @@ html.at-hero { background: var(--night); }
   .menu_links em { margin-left: 0; text-align: left; }
   .menu_links li:last-child a { color: var(--birch); }
   .menu_foot { position: relative; z-index: 1; }
+  /* The 4px plate stops html from being the edge-tint source without being
+     large enough to become one itself, so the strip stayed cream over the dark
+     hero however the plate was coloured. Off on a phone, and html alone tints
+     the strip the way it does on the other builds. */
+  .tintplate { display: none; }
   .hero { padding: calc(var(--nav-h) + 2svh) 1rem 3.5rem; }
   .card { padding: 1.4rem 1.1rem 1.4rem; }
   /* The card ran nearly the full height of the phone and left slivers of the

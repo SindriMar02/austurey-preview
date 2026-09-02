@@ -56,6 +56,11 @@ a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
 :focus-visible { outline: 2px solid var(--birch); outline-offset: 3px; }
 .wrap { width: min(100% - 2 * var(--pad), 82rem); margin-inline: auto; }
+/* Safari samples this fixed 4px plate for the status strip, so it has to
+   follow the ground under it: cream everywhere, ink while the dark hero owns
+   the top of the screen. Otherwise the phone shows a pale bar above the
+   photograph. */
+body.at-hero .tintplate { background: var(--night); }
 .tintplate { position: fixed; inset: 0 0 auto 0; height: 4px; z-index: 60; pointer-events: none; background-color: var(--g-bg); transition: background-color 1.6s cubic-bezier(.45,.05,.2,1); }
 .tintplate--foot { inset: auto 0 0 0; }
 
@@ -117,7 +122,7 @@ body.menu-open .menu_links a { transform: none; }
 .menu_img.is-visible { opacity: 1; }
 
 /* ---------- 1 · hero: the poster card over the lake ---------- */
-.hero { position: relative; background: var(--night); min-height: 100svh; display: grid; align-items: end; padding: calc(var(--nav-h) + 6vh) var(--pad) clamp(3rem, 9vh, 7rem); }
+.hero { position: relative; background: var(--night); min-height: 100svh; display: grid; align-items: end; padding: calc(var(--nav-h) + 6svh) var(--pad) clamp(3rem, 9svh, 7rem); }
 .hero_photo { position: absolute; inset: 0; overflow: clip; }
 .hero_img { width: 100%; height: 112%; object-fit: cover; object-position: 50% 60%; }
 .hero_photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(19,25,28,.34), rgba(19,25,28,.06) 40%, rgba(19,25,28,.28)); }
@@ -328,6 +333,8 @@ html:not(.js) .sw { opacity: 1; }
 html.js .rev[data-armed] { opacity: 0; transform: translateY(24px); }
 html.js .rev.in { opacity: 1; transform: none; transition: opacity .8s var(--ease), transform .8s var(--ease); }
 
+html { background: var(--paper); }
+
 /* ---------- responsive ---------- */
 @media (max-width: 1000px) {
   .stay_list { grid-template-columns: 1fr 1fr; }
@@ -352,8 +359,15 @@ html.js .rev.in { opacity: 1; transform: none; transition: opacity .8s var(--eas
   .menu_links em { margin-left: 0; text-align: left; }
   .menu_links li:last-child a { color: var(--birch); }
   .menu_foot { position: relative; z-index: 1; }
-  .hero { padding: calc(var(--nav-h) + 2vh) 1rem 3.5rem; }
-  .card { padding: 1.4rem 1.1rem 1rem; }
+  .hero { padding: calc(var(--nav-h) + 2svh) 1rem 3.5rem; }
+  .card { padding: 1.4rem 1.1rem 1.4rem; }
+  /* The card ran nearly the full height of the phone and left slivers of the
+     hero photograph at either side, so the first thing a guest saw was a card,
+     not the place. Two things inside it are the height: a 16/9 photograph
+     sitting on top of a full-bleed photograph, and three columns of contact
+     links that are footer content and are already in the footer and in the
+     sticky Book bar. Both go on a phone and the picture gets its screen. */
+  .card_fig, .card_foot { display: none; }
   .card_h1 { font-size: clamp(2.6rem, 13vw, 4rem); }
   .card_foot { grid-template-columns: 1fr; gap: .7rem; }
   .card_foot a:nth-child(2), .card_foot a:nth-child(3) { text-align: left; }

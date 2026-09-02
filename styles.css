@@ -177,6 +177,8 @@ body.menu-open .menu_links a { transform: none; }
 .stay_tags span { font: 400 .68rem/1 var(--sans); color: var(--g-soft); padding: .3rem .5rem; border: .03125rem solid var(--g-line); border-radius: .2rem; }
 .stay_more { justify-self: start; margin-top: .6rem; font: 500 .74rem/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--on-birch); background: var(--birch); padding: .7rem 1rem; border-radius: .25rem; transition: background .3s; }
 @media (hover: hover) and (pointer: fine) { .stay_more:hover { background: var(--birch-hi); } }
+.stays_shared { display: none; margin: clamp(1.2rem, 3vw, 1.8rem) auto 0; max-width: 34ch; text-align: center;
+  font: 400 .95rem/1.6 var(--sans); color: var(--g-soft); }
 .stays_empty { grid-column: 1 / -1; text-align: center; color: var(--g-soft); padding: 3rem 0; }
 
 /* ---------- 4 · included when you book here (the SAND split) ---------- */
@@ -355,9 +357,27 @@ html.js .rev.in { opacity: 1; transform: none; transition: opacity .8s var(--eas
   .card_h1 { font-size: clamp(2.6rem, 13vw, 4rem); }
   .card_foot { grid-template-columns: 1fr; gap: .7rem; }
   .card_foot a:nth-child(2), .card_foot a:nth-child(3) { text-align: left; }
-  .stay_list { grid-template-columns: 1fr; }
-  .stay--villa { grid-column: auto; }
-  .stay--villa .stay_media { aspect-ratio: 4/3; }
+  /* Eight of the nine stays are the SAME cottage behind a different
+     photograph: identical facts, identical tags, one booking link. One card
+     per screen therefore made the guest scroll roughly four thousand points
+     of repetition to learn nothing, and only ever see one and a half
+     cottages at a time. Two up puts four or five on a screen, the villa
+     spans the row because it is the one that differs, and the spec every
+     cottage shares is said ONCE above the grid instead of eight times
+     inside it. Re-composed for portrait, not flattened. */
+  .stay_list { grid-template-columns: 1fr 1fr; gap: .7rem; }
+  .stay--villa { grid-column: 1 / -1; }
+  .stay--villa .stay_media { aspect-ratio: 16/10; }
+  .stays_shared { display: block; }
+  .stay_type { padding: .75rem .8rem 1rem; gap: .35rem; }
+  .stay_name { font-size: 1.2rem; }
+  .stay:not(.stay--villa) .stay_facts,
+  .stay:not(.stay--villa) .stay_tags { display: none; }
+  /* 34px high was under the 44pt target; full width also stops the label
+     from wrapping in a 210pt column. */
+  .stay_more { width: 100%; justify-self: stretch; text-align: center;
+    min-height: 2.75rem; display: grid; place-items: center;
+    padding: .5rem .4rem; font-size: .7rem; letter-spacing: .08em; }
   .incl { grid-template-columns: 1fr; min-height: 0; }
   .incl_photo { aspect-ratio: 4/5; order: -1; }
   .exp_grid { grid-template-columns: 1fr; }

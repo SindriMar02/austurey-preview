@@ -66,7 +66,7 @@
   if (host) {
     host.innerHTML = STAYS.map(function (s) {
       return '<article class="stay' + (s.villa ? ' stay--villa' : '') + '" data-tags="' + s.tags.join('|') + '">' +
-        '<div class="stay_media"><img data-img="' + s.img + '" data-w="' + (s.villa ? '720 1440 2560' : '720 1440') + '" sizes="' + (s.villa ? '60vw' : '30vw') + '" alt="' + s.alt + '" loading="lazy"></div>' +
+        '<div class="stay_media"><img data-img="' + s.img + '" data-w="' + (s.villa ? '720 1440 2560' : '720 1440') + '" sizes="' + (s.villa ? '60vw' : '30vw') + '" data-sm="' + (s.villa ? '94vw' : '47vw') + '" alt="' + s.alt + '" loading="lazy"></div>' +
         '<div class="stay_type"><h3 class="stay_name">' + s.name + '</h3>' +
         '<p class="stay_facts">' + s.facts + '</p>' +
         '<div class="stay_tags">' + s.tags.map(function (t) { return '<span>' + t + '</span>'; }).join('') + '</div>' +

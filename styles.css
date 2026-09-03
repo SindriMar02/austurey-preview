@@ -78,6 +78,77 @@ html:not(.js) .rl > i, .rl.in > i { transform: translateY(0); }
 .rl.in > i { transition: transform .8s var(--expo); }
 
 
+
+/* ---------- 1 · THE PLATE ----------
+   The old hero was a photograph with a cream poster card laid over it, which on
+   a phone covered the photograph almost entirely: you arrived at the card, not
+   at the place. This is the SAGE shape instead. The painting is the page, the
+   mark sits in it, and nothing else competes. The painting is their own lake
+   photograph repainted as a tonal landscape, so it is still Apavatn and still
+   theirs, not stock atmosphere. */
+.plate { position: relative; min-height: 100svh; display: grid; place-items: center;
+  background: var(--night); overflow: clip; isolation: isolate; }
+.plate_art { position: absolute; inset: 0; z-index: 0; }
+.plate_img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 58%; display: block;
+  transform: scale(1.06); transform-origin: 50% 45%; }
+/* A painting carries its own darkness, so this only deepens the corners and
+   settles the middle enough for cream type. Measured, not eyeballed: see the
+   contrast note in the commit. */
+.plate_veil { position: absolute; inset: 0;
+  background:
+    radial-gradient(78% 58% at 50% 46%, rgba(10,14,16,.30) 0%, rgba(10,14,16,.52) 62%, rgba(10,14,16,.72) 100%),
+    linear-gradient(180deg, rgba(10,14,16,.46) 0%, rgba(10,14,16,.12) 34%, rgba(10,14,16,.30) 78%, rgba(10,14,16,.68) 100%); }
+
+.plate_mark { position: relative; z-index: 1; margin: 0; display: grid; justify-items: center;
+  padding-inline: 1.5rem; text-align: center; color: var(--paper); }
+.plate_word { font: 400 clamp(3.1rem, 11.5vw, 9.5rem)/.92 var(--disp);
+  letter-spacing: .085em; text-indent: .085em; }
+/* the rule, interrupted by the year, exactly as a stamped mark would set it */
+.plate_rule { display: flex; align-items: center; gap: clamp(.9rem, 2.4vw, 1.6rem);
+  width: min(30rem, 76vw); margin-top: clamp(1rem, 2.4vw, 1.7rem); }
+.plate_rule::before, .plate_rule::after { content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(244,242,236,.5), transparent); }
+.plate_rule i { font: 500 .62rem/1 var(--sans); font-style: normal; letter-spacing: .34em;
+  text-indent: .34em; text-transform: uppercase; color: rgba(244,242,236,.82); white-space: nowrap; }
+.plate_sub { margin-top: clamp(.85rem, 2vw, 1.35rem);
+  font: 400 clamp(.82rem, 1.5vw, 1.02rem)/1 var(--disp);
+  letter-spacing: .3em; text-indent: .3em; text-transform: uppercase; color: rgba(244,242,236,.9); }
+.plate_hint { position: absolute; z-index: 1; left: 50%; transform: translateX(-50%);
+  bottom: calc(1.6rem + env(safe-area-inset-bottom)); margin: 0;
+  font: 500 .56rem/1 var(--sans); letter-spacing: .34em; text-indent: .34em; text-transform: uppercase;
+  color: rgba(244,242,236,.62); }
+
+/* the mark arrives rather than appears */
+html.js .plate_word, html.js .plate_rule, html.js .plate_sub { opacity: 0; transform: translateY(1.1rem); }
+html.js .plate.is-lit .plate_word,
+html.js .plate.is-lit .plate_rule,
+html.js .plate.is-lit .plate_sub { opacity: 1; transform: none;
+  transition: opacity 1.1s var(--expo), transform 1.1s var(--expo); }
+html.js .plate.is-lit .plate_rule { transition-delay: .22s; }
+html.js .plate.is-lit .plate_sub  { transition-delay: .34s; }
+
+/* ---------- 1b · THE LEAF ----------
+   Cream paper directly under the painting, the way a plate is followed by its
+   caption page. Two columns of ordinary prose, no card, no shadow. */
+.leaf { background: var(--paper); color: var(--g-ink); padding-block: clamp(4.5rem, 11vh, 9rem); }
+.leaf_in { width: min(100% - 2.4rem, 74rem); margin-inline: auto; }
+.leaf_mark { margin: 0; font: 400 1.32rem/1 var(--disp); letter-spacing: .3em; text-indent: .3em; }
+.leaf_body { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.6rem, 4vw, 3.4rem);
+  margin-top: clamp(1.6rem, 3.6vw, 2.6rem); padding-top: clamp(1.6rem, 3.6vw, 2.6rem);
+  border-top: .03125rem solid var(--g-line); }
+.leaf_col p { font: 400 clamp(.94rem, 1.15vw, 1.02rem)/1.72 var(--sans); color: var(--g-soft); }
+.leaf_col p + p { margin-top: 1.05rem; }
+.leaf_meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem;
+  margin-top: clamp(2.4rem, 5vw, 3.6rem); padding-top: 1.1rem; border-top: .03125rem solid var(--g-line); }
+.leaf_meta dt { font: 500 .58rem/1 var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--g-soft); }
+.leaf_meta dd { margin: .5rem 0 0; font: 400 .95rem/1.5 var(--sans); color: var(--g-ink); }
+
+@media (max-width: 860px) {
+  .plate_img { object-position: 50% 52%; transform: scale(1.02); }
+  .leaf_body, .leaf_meta { grid-template-columns: 1fr; }
+  .leaf_meta { gap: 1.4rem; }
+}
+
 /* ---------- arrival curtain ---------- */
 /* Every other build in this family opens on one and Austurey opened on a raw
    hero, which is the moment the design is judged. Cream ground so there is no

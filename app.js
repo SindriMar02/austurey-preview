@@ -27,7 +27,12 @@
     var fill = document.getElementById('arrivalFill');
     var seen = false;
     try { seen = sessionStorage.getItem('austurey_arrived') === '1'; } catch (e) { /* private mode */ }
-    if (seen || reduced) { el.remove(); return; }
+    if (seen || reduced) {
+      el.remove();
+      var p0 = document.querySelector('.plate');
+      if (p0) p0.classList.add('is-lit');
+      return;
+    }
 
     root.classList.add('arrival-on');
     var MIN_HOLD = 900, CAP = 4200, t0 = Date.now(), done = false;
@@ -40,6 +45,8 @@
       setTimeout(function () {
         el.classList.add('is-up');
         root.classList.remove('arrival-on');
+        var plate = document.querySelector('.plate');
+        if (plate) plate.classList.add('is-lit');
         /* the element keeps painting through the lift, then stops existing */
         setTimeout(function () { el.remove(); }, 1000);
       }, wait);
@@ -50,7 +57,7 @@
     function step() { steps = Math.min(steps + 1, 3); fill.style.transform = 'scaleX(' + (steps / 3) + ')'; }
     setTimeout(step, 120);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(step); else setTimeout(step, 400);
-    var hero = document.querySelector('.hero_img');
+    var hero = document.querySelector('.plate_img');
     if (hero && hero.complete) step();
     else if (hero) hero.addEventListener('load', step, { once: true });
     else step();
@@ -243,7 +250,7 @@
 
   /* the sticky mobile bar hides while the hero is on screen and at the form */
   (function () {
-    var hero = document.querySelector('.hero');
+    var hero = document.querySelector('.plate');
     if (!hero) return;
     new IntersectionObserver(function (es) { es.forEach(function (e) {
       body.classList.toggle('at-hero', e.isIntersecting);
@@ -398,9 +405,9 @@
         var img = wrap.querySelector('img'); if (!img) return;
         gsap.fromTo(img, { y: '0rem' }, { y: '-4rem', ease: 'none', scrollTrigger: { trigger: wrap, start: 'top 70%', end: 'bottom 30%', scrub: true } });
       });
-      /* the hero photograph drifts under the card as the card scrolls away */
-      var hp = document.querySelector('.hero_img');
-      if (hp) gsap.fromTo(hp, { y: '-2rem' }, { y: '3rem', ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+      /* the painting drifts as the plate scrolls away, slower than the page */
+      var hp = document.querySelector('.plate_img');
+      if (hp) gsap.fromTo(hp, { y: '-2.5rem' }, { y: '4rem', ease: 'none', scrollTrigger: { trigger: '.plate', start: 'top top', end: 'bottom top', scrub: true } });
     },
     '(max-width: 767px)': function () { gsap.set('[data-img-wrap] img', { y: 0 }); }
   });

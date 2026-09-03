@@ -12,7 +12,7 @@
 <link rel="preload" href="assets/fonts/Switzer-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
 <link rel="apple-touch-icon" href="assets/img/favicon-180.png">
-<link rel="stylesheet" href="styles.css?v=f7f99c35">
+<link rel="stylesheet" href="styles.css?v=b40260bf">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"LodgingBusiness","@id":"https://austurey.is/#business","name":"Austurey Gisting","url":"https://austurey.is","email":"austurey@austurey.is","telephone":"+354 773 0378","address":{"@type":"PostalAddress","streetAddress":"Austurey 1","addressLocality":"Bláskógabyggð","postalCode":"840","addressCountry":"IS"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"9.7","bestRating":"10","reviewCount":"390"},"amenityFeature":[{"@type":"LocationFeatureSpecification","name":"Fishing","value":true},{"@type":"LocationFeatureSpecification","name":"EV charger","value":true},{"@type":"LocationFeatureSpecification","name":"Free parking","value":true}],"containsPlace":[{"@type":"Accommodation","name":"Austurey Lakefront Villa","floorSize":{"@type":"QuantitativeValue","value":184,"unitCode":"MTK"},"numberOfBedrooms":4,"occupancy":{"@type":"QuantitativeValue","maxValue":8},"amenityFeature":[{"@type":"LocationFeatureSpecification","name":"Sauna","value":true},{"@type":"LocationFeatureSpecification","name":"Hot tub","value":true},{"@type":"LocationFeatureSpecification","name":"Kayaks","value":true}]},{"@type":"Accommodation","name":"Austurey Cottage","occupancy":{"@type":"QuantitativeValue","maxValue":2},"amenityFeature":[{"@type":"LocationFeatureSpecification","name":"Lake view","value":true},{"@type":"LocationFeatureSpecification","name":"Terrace","value":true}]}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is the fishing permit really included?","acceptedAnswer":{"@type":"Answer","text":"Guests who book the Lakefront Villa directly through Austurey receive complimentary fishing permits for Lake Apavatn. Cottage guests who book direct get a special discount on permits. Rods and kayaks are on site."}},{"@type":"Question","name":"When is the fishing season?","acceptedAnswer":{"@type":"Answer","text":"Lake Apavatn from 1 February to 10 October; the Hólaá river from 1 April to 24 September. River permits are limited each day, so book those in advance."}},{"@type":"Question","name":"Can we see the northern lights?","acceptedAnswer":{"@type":"Answer","text":"From late August until April, on clear nights, from the cottages and the villa. There is very little light around the farm."}},{"@type":"Question","name":"Is there a restaurant?","acceptedAnswer":{"@type":"Answer","text":"No. Every cottage has a kitchenette and the villa a full kitchen; Laugarvatn, ten kilometres away, has restaurants and shops."}},{"@type":"Question","name":"Can I bring a pet?","acceptedAnswer":{"@type":"Answer","text":"Pets are not allowed."}}]}]}</script>
 </head>
 <body class="at-hero" data-ground="day">
@@ -73,24 +73,47 @@
 <main id="main">
 
   <!-- ═══ 1 · HERO · the poster card over the lake ═══ -->
-  <section class="hero" id="top" aria-label="Austurey">
-    <div class="hero_photo" data-img-wrap>
-      <picture><source media="(max-width: 860px)" srcset="assets/img/hero-villa-p@720.webp 720w" sizes="100vw"><img class="hero_img" src="assets/img/hero-villa@1440.webp" srcset="assets/img/hero-villa@720.webp 720w, assets/img/hero-villa@1440.webp 1440w, assets/img/hero-villa@2560.webp 2560w" sizes="100vw" alt="The terrace of the Lakefront Villa at dusk, Apavatn beyond the glass" fetchpriority="high"></picture>
+  <!-- ═══ 1 · THE PLATE · a painting of their own lake, and the mark on it ═══ -->
+  <section class="plate" id="top" aria-label="Austurey">
+    <div class="plate_art" data-img-wrap>
+      <picture>
+        <source media="(max-width: 860px)" srcset="assets/img/paint-lake-p@720.webp 720w, assets/img/paint-lake-p@1080.webp 1080w" sizes="100vw">
+        <img class="plate_img" src="assets/img/paint-lake@1440.webp"
+          srcset="assets/img/paint-lake@720.webp 720w, assets/img/paint-lake@1440.webp 1440w, assets/img/paint-lake@2560.webp 2560w"
+          sizes="100vw" alt="Apavatn painted as a tonal landscape: the far ridge, the still water and the stony shore below the farm"
+          fetchpriority="high">
+      </picture>
+      <span class="plate_veil" aria-hidden="true"></span>
     </div>
-    <div class="card" id="poster">
-      <p class="card_eyebrow">Austurey · Apavatn · Golden Circle</p>
-      <h1 class="card_h1" data-reveal data-split="lines"><i>The lake</i> is included.</h1>
-      <figure class="card_fig">
-        <picture><source media="(max-width: 860px)" srcset="assets/img/villa-tub-p@720.webp 720w" sizes="86vw"><img src="assets/img/villa-tub@1440.webp" srcset="assets/img/villa-tub@720.webp 720w, assets/img/villa-tub@1440.webp 1440w, assets/img/villa-tub@2560.webp 2560w" sizes="(max-width: 860px) 86vw, 46rem" alt="The hot tub on the villa's terrace, the lake beyond" loading="eager"></picture>
-      </figure>
-      <p class="card_addr">Austurey 1, Bláskógabyggð, Iceland. Eight cottages for two and a villa for eight, on a sheep farm at the shore of Apavatn, seventy kilometres from Reykjavík.</p>
-      <div class="card_foot">
-        <a href="mailto:austurey@austurey.is"><span>Contact</span>austurey@austurey.is</a>
-        <a href="#boka"><span>Book direct</span>the lake comes with it</a>
-        <a href="https://www.facebook.com/austureycottages/" target="_blank" rel="noopener"><span>Follow</span>@austureycottages</a>
+
+    <h1 class="plate_mark">
+      <span class="plate_word">AUSTUREY</span>
+      <span class="plate_rule" aria-hidden="true"><i>ESTD 2018</i></span>
+      <span class="plate_sub">Cottages &amp; Lakefront Villa</span>
+    </h1>
+
+    <p class="plate_hint" aria-hidden="true">Scroll</p>
+  </section>
+
+  <!-- ═══ 1b · THE STATEMENT · cream paper, the brand said plainly ═══ -->
+  <section class="leaf" aria-label="Austurey, in short">
+    <div class="leaf_in">
+      <p class="leaf_mark">AUSTUREY</p>
+      <div class="leaf_body">
+        <div class="leaf_col">
+          <p class="rev">Austurey is a working sheep farm on the shore of Apavatn, seventy kilometres from Reykjavík and inside the Golden Circle. Eight cottages for two and a lakefront villa for eight stand in the field, each one facing the water with the others out of sight.</p>
+        </div>
+        <div class="leaf_col">
+          <p class="rev">The lake is not a view from the property. It is part of it: guests who book direct fish it with the permit included, take the kayaks out from the shore, and have the whole of it to themselves on a weekday evening.</p>
+          <p class="rev">The farm has been in the same family since 1926. The cottages opened in June 2018, the villa two years later where the river meets the lake, and two more cottages in the summer of 2025.</p>
+        </div>
       </div>
+      <dl class="leaf_meta">
+        <div><dt>Where</dt><dd>Austurey 1 · 840 Laugarvatn</dd></div>
+        <div><dt>Stays</dt><dd>Nine, for two to eight</dd></div>
+        <div><dt>Book</dt><dd><a class="ulink" href="#boka">Direct, permit included</a></dd></div>
+      </dl>
     </div>
-    <p class="hero_hint" aria-hidden="true">Scroll</p>
   </section>
 
   <!-- ═══ 2 · INTRO ═══ -->
@@ -302,6 +325,6 @@
 <script src="assets/vendor/ScrollTrigger.min.js"></script>
 <script src="assets/vendor/lenis.min.js"></script>
 <script src="assets/vendor/staypicker.js"></script>
-<script src="app.js?v=fb442ff0"></script>
+<script src="app.js?v=573b4929"></script>
 </body>
 </html>

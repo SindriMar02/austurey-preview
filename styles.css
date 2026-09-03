@@ -183,14 +183,22 @@ html.js .plate.is-lit .plate_sub  { transition-delay: .34s; }
 .gal_head .h2 { color: #F2F1EA; }
 .gal_note { margin-top: 1.4rem; max-width: 42rem; font: 400 .95rem/1.7 var(--sans); color: #9AA39B; }
 
+/* The nine break evenly or they do not break at all. At three columns the villa
+   is a 2x2 block: 4 cells for the villa plus 8 cottages is exactly 12, so four
+   full rows and nothing stranded. At two columns the villa takes the full first
+   row: 2 plus 8 is exactly 10, five full rows. At one column the question does
+   not arise. Before this the villa spanned 2 of 3 and the eight cottages made
+   ten cells in a twelve-cell grid, which left Cottage 8 alone on its own row. */
 .gal_grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(.9rem, 1.8vw, 1.5rem);
-  margin-top: clamp(2.6rem, 6vw, 4.4rem); }
+  margin-top: clamp(2.6rem, 6vw, 4.4rem); align-items: stretch; }
 
-.gcard { display: flex; flex-direction: column; }
-.gcard--villa { grid-column: span 2; }
+.gcard { display: grid; grid-template-rows: auto auto; align-content: start; }
+.gcard--villa { grid-column: span 2; grid-row: span 2; grid-template-rows: 1fr auto; }
 .gcard_shot { display: block; width: 100%; padding: 0; border: 0; cursor: pointer; overflow: clip;
   background: #0e1416; aspect-ratio: 4/3; position: relative; }
-.gcard--villa .gcard_shot { aspect-ratio: 8/5; }
+/* the villa's picture stops being a fixed ratio and fills the taller block, so
+   its foot lines up with the bottom of the second cottage row */
+.gcard--villa .gcard_shot { aspect-ratio: auto; height: 100%; min-height: 18rem; }
 .gcard_shot img { width: 100%; height: 100%; object-fit: cover; display: block;
   transition: transform 1.15s cubic-bezier(.76,0,.24,1), filter .6s var(--ease); }
 .gcard_shot::after { content: ''; position: absolute; inset: 0; pointer-events: none;
@@ -259,10 +267,16 @@ html.lbox-on .nav, html.lbox-on .mobilebar_wrap { opacity: 0; pointer-events: no
   .lbox_nav:hover::before { opacity: 1; }
 }
 
-@media (max-width: 1100px) { .gal_grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 1100px) {
+  .gal_grid { grid-template-columns: repeat(2, 1fr); }
+  /* two columns: the villa takes the whole first row and one row only, so the
+     eight cottages fill four exact rows under it */
+  .gcard--villa { grid-column: span 2; grid-row: span 1; grid-template-rows: auto auto; }
+  .gcard--villa .gcard_shot { aspect-ratio: 2/1; height: auto; min-height: 0; }
+}
 @media (max-width: 700px) {
   .gal_grid { grid-template-columns: 1fr; }
-  .gcard--villa { grid-column: auto; }
+  .gcard--villa { grid-column: auto; grid-row: auto; }
   .gcard--villa .gcard_shot { aspect-ratio: 4/3; }
 }
 @media (prefers-reduced-motion: reduce) {

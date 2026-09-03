@@ -147,7 +147,10 @@
     var btns = [].slice.call(list.querySelectorAll('button'));
     var factsEl = document.getElementById('pickFacts');
     var goEl = document.getElementById('pickGo');
-    var current = 0, locked = 0;
+    /* -1, not 0: show() returns early when the index is already current, so
+       starting at 0 meant the opening lock(0) never wrote the first facts line
+       and the panel loaded blank. */
+    var current = -1, locked = 0;
 
     function show(i) {
       if (i === current) return;

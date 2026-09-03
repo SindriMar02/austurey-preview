@@ -232,6 +232,11 @@ html.js .gal.is-in .gcard:nth-child(9) { transition-delay: .52s }
   background: rgba(8,11,13,.94); opacity: 0; transition: opacity .32s var(--ease); padding: clamp(1rem, 4vw, 3rem); }
 .lbox.is-on { opacity: 1; }
 html.lbox-on, html.lbox-on body { overflow: hidden; }
+/* the nav sits at z-58 under the lightbox's z-80, so at .94 it ghosted through
+   the overlay rather than being covered; it stands down while the lightbox is
+   open and comes straight back */
+html.lbox-on .nav, html.lbox-on .mobilebar_wrap { opacity: 0; pointer-events: none; visibility: hidden; }
+.nav { transition: opacity .3s var(--ease), visibility .3s; }
 .lbox_fig { margin: 0; display: grid; gap: .9rem; justify-items: center; max-width: min(96vw, 78rem); }
 .lbox_img { max-width: 100%; max-height: 78svh; object-fit: contain; display: block;
   transform: scale(.985); transition: transform .45s cubic-bezier(.76,0,.24,1); }

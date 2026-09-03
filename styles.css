@@ -77,12 +77,39 @@ body.at-hero .tintplate { background: var(--night); }
 html:not(.js) .rl > i, .rl.in > i { transform: translateY(0); }
 .rl.in > i { transition: transform .8s var(--expo); }
 
+
+/* ---------- arrival curtain ---------- */
+/* Every other build in this family opens on one and Austurey opened on a raw
+   hero, which is the moment the design is judged. Cream ground so there is no
+   white flash before the stylesheet lands, the wordmark set exactly as the nav
+   sets it, a birch rule that fills, then the whole thing lifts and hands the
+   hero over. Once per session, and never for prefers-reduced-motion. */
+.arrival { position: fixed; inset: 0; z-index: 90; background: var(--paper);
+  display: grid; place-items: center;
+  transition: transform 1s cubic-bezier(.76,0,.24,1); will-change: transform; }
+.arrival_in { display: grid; justify-items: center; gap: .75rem; }
+.arrival_a { font: 400 clamp(1.5rem, 3.4vw, 2.4rem)/1 var(--disp); letter-spacing: .3em; text-indent: .3em; color: var(--g-ink); }
+.arrival_c { font: 500 .56rem/1 var(--sans); letter-spacing: .34em; text-indent: .34em; text-transform: uppercase; color: var(--g-soft); }
+.arrival_rule { position: relative; display: block; width: min(42vw, 15rem); height: 1px; background: var(--g-line); margin-top: .9rem; }
+.arrival_rule i { position: absolute; inset: 0; background: var(--birch); transform: scaleX(0); transform-origin: 0 50%;
+  transition: transform .5s linear; }
+.arrival.is-up { transform: translateY(-100%); }
+html.arrival-on, html.arrival-on body { overflow: hidden; }
+@media (prefers-reduced-motion: reduce) { .arrival { display: none; } }
+
 /* ---------- nav ---------- */
 .nav { position: fixed; inset: 0 0 auto 0; z-index: 58; height: calc(var(--nav-h) + env(safe-area-inset-top));
   padding-top: env(safe-area-inset-top); transition: height .6s cubic-bezier(.65,0,.35,1); color: #F2F1EA; }
 body.scrolled .nav { height: calc(4rem + env(safe-area-inset-top)); }
 body.scrolled .nav_in { color: var(--g-ink); }
 body.menu-open .nav_in { color: #E9EBE6; }
+/* The nav sits ABOVE the overlay (z 58 over 56). Centred, the wordmark
+   straddled the 50/50 split and "Book direct" landed on the photograph, both
+   half-legible. The wordmark moves into the dark column and Book direct goes,
+   since the menu lists it as a row anyway. */
+body.menu-open .nav_logo { left: var(--pad); transform: translate(0, -50%) scale(.72); justify-items: start; text-align: left; }
+body.menu-open .nav_book { opacity: 0; pointer-events: none; }
+.nav_book { transition: opacity .35s var(--ease); }
 body.menu-open .nav_bg { opacity: 0; }
 .nav_bg { position: absolute; inset: 0; background: var(--g-bg); border-bottom: .03125rem solid var(--g-line); opacity: 0; transition: opacity .6s cubic-bezier(.65,0,.35,1), background-color 1.6s cubic-bezier(.45,.05,.2,1); }
 body.scrolled .nav_bg { opacity: 1; }
@@ -99,10 +126,27 @@ body.scrolled .nav_logo { transform: translate(-50%, -50%) scale(.62); }
 .nav_burger span { display: block; height: 1px; width: 1.15rem; margin-inline: auto; background: currentColor; transition: transform .4s var(--ease); }
 body.menu-open .nav_burger span:first-child { transform: translateY(.175rem) rotate(45deg); }
 body.menu-open .nav_burger span:last-child { transform: translateY(-.175rem) rotate(-45deg); }
-body.menu-open .nav_burger { background: var(--birch); color: var(--on-birch); }
+/* A solid birch disc under an X read as a bolted-on UI control against type
+   this quiet. It stays the same size, keeps the page's own colour, and gets a
+   hairline ring so it is still obviously a button. */
+.nav_burger { border: .03125rem solid transparent; }
+body.menu-open .nav_burger { border-color: rgba(233,235,230,.34); }
+@media (hover: hover) and (pointer: fine) {
+  .nav_burger:hover { border-color: currentColor; }
+}
 
 /* ---------- menu ---------- */
-.menu { position: fixed; inset: 0; z-index: 56; display: grid; grid-template-columns: 1fr 1fr; background: var(--night); color: #E9EBE6; opacity: 0; visibility: hidden; transition: opacity .45s var(--ease), visibility .45s; }
+/* Desktop entrance: the ink column comes in from the left and the photograph
+   from the right, so the split itself is the gesture. Mobile keeps the plain
+   fade, where the panel is one column and a slide would fight the scroll. */
+@media (min-width: 861px) {
+  .menu_links, .menu_visual { transition: transform .85s var(--expo); }
+  .menu_links { transform: translateX(-101%); }
+  .menu_visual { transform: translateX(101%); }
+  body.menu-open .menu_links, body.menu-open .menu_visual { transform: none; }
+}
+.menu { position: fixed; inset: 0; z-index: 56; display: grid; grid-template-columns: 1fr 1fr; color: #E9EBE6; opacity: 0; visibility: hidden; transition: opacity .45s var(--ease), visibility .45s; }
+.menu_links { background: var(--night); }
 .menu[hidden] { display: grid; }
 body.menu-open .menu { opacity: 1; visibility: visible; }
 body.menu-open .mobilebar_wrap { visibility: hidden; }
@@ -112,6 +156,16 @@ body.menu-open .mobilebar_wrap { visibility: hidden; }
 .menu_links li:first-child { border-top: .03125rem solid #2B3539; }
 .menu_links a { position: relative; display: flex; align-items: baseline; gap: 1rem; padding: clamp(.85rem, 2.2vh, 1.4rem) 0; transform: translateY(105%); transition: transform .8s var(--expo), color .3s; }
 body.menu-open .menu_links a { transform: none; }
+/* They all moved at once, which reads as one slab rather than a list being
+   written. 70ms apart is enough to feel deliberate without feeling slow. */
+body.menu-open .menu_links li:nth-child(1) a { transition-delay: .10s; }
+body.menu-open .menu_links li:nth-child(2) a { transition-delay: .17s; }
+body.menu-open .menu_links li:nth-child(3) a { transition-delay: .24s; }
+body.menu-open .menu_links li:nth-child(4) a { transition-delay: .31s; }
+body.menu-open .menu_links li:nth-child(5) a { transition-delay: .38s; }
+body.menu-open .menu_links li:nth-child(6) a { transition-delay: .45s; }
+.menu_foot { opacity: 0; transform: translateY(1rem); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+body.menu-open .menu_foot { opacity: 1; transform: none; transition-delay: .5s; }
 .menu_links span { font: 400 clamp(1.5rem, 3.2vw, 2.4rem)/1.1 var(--disp); }
 .menu_links em { font: 400 .76rem/1 var(--sans); font-style: normal; letter-spacing: .05em; color: #9AA39B; margin-left: auto; text-align: right; }
 .menu_links a::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: var(--birch); transform: scaleX(0); transform-origin: 0 50%; transition: transform .5s var(--ease); }

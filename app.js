@@ -16,6 +16,49 @@
   var hasGSAP = !!(window.gsap && window.ScrollTrigger);
   var meta = document.getElementById('themeColor');
 
+  /* ---------- the arrival curtain ----------
+     Runs once per session and never under prefers-reduced-motion. The bar is
+     honest about the two things worth waiting for, fonts and the hero image,
+     and it holds a beat so the wordmark is actually read rather than flashed.
+     A hard cap means a slow connection still gets in. */
+  (function arrival() {
+    var el = document.getElementById('arrival');
+    if (!el) return;
+    var fill = document.getElementById('arrivalFill');
+    var seen = false;
+    try { seen = sessionStorage.getItem('austurey_arrived') === '1'; } catch (e) { /* private mode */ }
+    if (seen || reduced) { el.remove(); return; }
+
+    root.classList.add('arrival-on');
+    var MIN_HOLD = 900, CAP = 4200, t0 = Date.now(), done = false;
+
+    function lift() {
+      if (done) return; done = true;
+      try { sessionStorage.setItem('austurey_arrived', '1'); } catch (e) { /* private mode */ }
+      fill.style.transform = 'scaleX(1)';
+      var wait = Math.max(0, MIN_HOLD - (Date.now() - t0));
+      setTimeout(function () {
+        el.classList.add('is-up');
+        root.classList.remove('arrival-on');
+        /* the element keeps painting through the lift, then stops existing */
+        setTimeout(function () { el.remove(); }, 1000);
+      }, wait);
+    }
+
+    /* progress: fonts, then the hero image, then whatever is left */
+    var steps = 0;
+    function step() { steps = Math.min(steps + 1, 3); fill.style.transform = 'scaleX(' + (steps / 3) + ')'; }
+    setTimeout(step, 120);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(step); else setTimeout(step, 400);
+    var hero = document.querySelector('.hero_img');
+    if (hero && hero.complete) step();
+    else if (hero) hero.addEventListener('load', step, { once: true });
+    else step();
+
+    window.addEventListener('load', lift);
+    setTimeout(lift, CAP);
+  })();
+
   /* ---------- ground writer ---------- */
   function setGround(g) {
     if (body.dataset.ground === g) return;

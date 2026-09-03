@@ -336,7 +336,15 @@
       function wordSpan(t) { var sp = document.createElement('span'); sp.className = 'sw'; sp.textContent = t; return sp; }
       [].slice.call(el.childNodes).forEach(function (node) {
         if (node.nodeType === 3) {
-          var parts = node.textContent.replace(/\s+/g, ' ').split(' ');
+          var txt = node.textContent.replace(/\s+/g, ' ');
+          /* A text node that FOLLOWS an element begins with the space that
+             separated them ("</strong> from"). split(' ') turns that into an
+             empty first part, and skipping it welded the two together on the
+             page as "Booking.comfrom". Put the space back as its own node: it
+             cannot go on the previous span, because that span holds the
+             <strong> and setting textContent on it would flatten the markup. */
+          if (txt.charAt(0) === ' ' && frag.lastChild) frag.appendChild(document.createTextNode(' '));
+          var parts = txt.split(' ');
           parts.forEach(function (w, i) { if (!w) return; frag.appendChild(wordSpan(w + (i < parts.length - 1 ? ' ' : ''))); });
         } else { var sp = wordSpan(''); sp.appendChild(node.cloneNode(true)); frag.appendChild(sp); }
       });

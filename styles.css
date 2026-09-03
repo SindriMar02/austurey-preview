@@ -127,13 +127,19 @@ body.scrolled .nav_logo { transform: translate(-50%, -50%) scale(.62); }
 body.menu-open .nav_burger span:first-child { transform: translateY(.175rem) rotate(45deg); }
 body.menu-open .nav_burger span:last-child { transform: translateY(-.175rem) rotate(-45deg); }
 /* A solid birch disc under an X read as a bolted-on UI control against type
-   this quiet. It stays the same size, keeps the page's own colour, and gets a
-   hairline ring so it is still obviously a button. */
+   this quiet. It keeps its size and the page's own colour and gets a hairline
+   ring instead. The ring alone is not enough over the photograph, which is a
+   bright sky in four of the five menu images, so the corner it sits in gets a
+   soft scrim: contrast that holds on any of them without a chunky button. */
 .nav_burger { border: .03125rem solid transparent; }
-body.menu-open .nav_burger { border-color: rgba(233,235,230,.34); }
+body.menu-open .nav_burger { border-color: rgba(233,235,230,.5); }
 @media (hover: hover) and (pointer: fine) {
   .nav_burger:hover { border-color: currentColor; }
 }
+.menu_scrim { position: absolute; inset: 0 0 auto 0; height: 13rem; pointer-events: none;
+  background: linear-gradient(180deg, rgba(19,25,28,.62) 0%, rgba(19,25,28,.28) 45%, rgba(19,25,28,0) 100%);
+  opacity: 0; transition: opacity .5s var(--ease) .25s; }
+body.menu-open .menu_scrim { opacity: 1; }
 
 /* ---------- menu ---------- */
 /* Desktop entrance: the ink column comes in from the left and the photograph

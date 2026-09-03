@@ -236,9 +236,16 @@ html.js .gal.is-in .gcard:nth-child(8) { transition-delay: .46s }
 html.js .gal.is-in .gcard:nth-child(9) { transition-delay: .52s }
 
 /* ---------- the lightbox ---------- */
+/* `.lbox { display: grid }` and the browser's own `[hidden] { display: none }`
+   have the same specificity, so mine won and the closed lightbox stayed a
+   full-viewport layer at z-80 with pointer-events auto. Invisible, and it ate
+   every click on the page: the burger, Book direct, the logo, the cards, the
+   calendar. Both belts here on purpose. */
 .lbox { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center;
-  background: rgba(8,11,13,.94); opacity: 0; transition: opacity .32s var(--ease); padding: clamp(1rem, 4vw, 3rem); }
-.lbox.is-on { opacity: 1; }
+  background: rgba(8,11,13,.94); opacity: 0; pointer-events: none;
+  transition: opacity .32s var(--ease); padding: clamp(1rem, 4vw, 3rem); }
+.lbox[hidden] { display: none; }
+.lbox.is-on { opacity: 1; pointer-events: auto; }
 html.lbox-on, html.lbox-on body { overflow: hidden; }
 /* the nav sits at z-58 under the lightbox's z-80, so at .94 it ghosted through
    the overlay rather than being covered; it stands down while the lightbox is

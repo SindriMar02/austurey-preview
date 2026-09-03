@@ -8,6 +8,11 @@
 @font-face { font-family: 'Instrument Serif'; src: url('assets/fonts/instrument-serif-v5-latin_latin-ext-italic.woff2') format('woff2'); font-weight: 400; font-style: italic; font-display: swap; }
 @font-face { font-family: 'Switzer'; src: url('assets/fonts/Switzer-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
 @font-face { font-family: 'Switzer'; src: url('assets/fonts/Switzer-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+/* Sprat Condensed Light (Collletttivo, OFL) — the masthead face. Verified by
+   its internal name record before use, because three display fonts in the
+   library are not what their folder says they are and a build that specifies
+   one silently ships a different proportion. Full Icelandic, checked. */
+@font-face { font-family: 'Sprat'; src: url('assets/fonts/Sprat-CondensedLight.woff2') format('woff2'); font-weight: 300; font-style: normal; font-display: swap; }
 @font-face { font-family: 'ProjektBlackbirdIS'; src: url('assets/fonts/ProjektBlackbirdIS.otf') format('opentype'); font-weight: 400; font-display: swap; }
 
 :root {
@@ -26,6 +31,7 @@
   --g-line: #DAD6CC;
 
   --disp: 'Instrument Serif', ui-serif, Georgia, serif;
+  --mark: 'Sprat', 'Instrument Serif', ui-serif, Georgia, serif;
   --sans: 'Switzer', ui-sans-serif, system-ui, sans-serif;
   --ease: cubic-bezier(.23, 1, .32, 1);
   --expo: cubic-bezier(.19, 1, .22, 1);
@@ -107,8 +113,8 @@ html:not(.js) .rl > i, .rl.in > i { transform: translateY(0); }
 
 .plate_mark { position: relative; z-index: 1; margin: 0; display: grid; justify-items: center;
   padding-inline: 1.5rem; text-align: center; color: var(--paper); }
-.plate_word { font: 400 clamp(3.1rem, 11.5vw, 9.5rem)/.92 var(--disp);
-  letter-spacing: .085em; text-indent: .085em; }
+.plate_word { font: 300 clamp(3.5rem, 13.5vw, 11.5rem)/.9 var(--mark);
+  letter-spacing: .11em; text-indent: .11em; }
 /* the rule, interrupted by the year, exactly as a stamped mark would set it */
 .plate_rule { display: flex; align-items: center; gap: clamp(.9rem, 2.4vw, 1.6rem);
   width: min(30rem, 76vw); margin-top: clamp(1rem, 2.4vw, 1.7rem); }
@@ -138,7 +144,7 @@ html.js .plate.is-lit .plate_sub  { transition-delay: .34s; }
    caption page. Two columns of ordinary prose, no card, no shadow. */
 .leaf { background: var(--paper); color: var(--g-ink); padding-block: clamp(4.5rem, 11vh, 9rem); }
 .leaf_in { width: min(100% - 2.4rem, 74rem); margin-inline: auto; }
-.leaf_mark { margin: 0; font: 400 1.32rem/1 var(--disp); letter-spacing: .3em; text-indent: .3em; }
+.leaf_mark { margin: 0; font: 300 1.46rem/1 var(--mark); letter-spacing: .3em; text-indent: .3em; }
 .leaf_body { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.6rem, 4vw, 3.4rem);
   margin-top: clamp(1.6rem, 3.6vw, 2.6rem); padding-top: clamp(1.6rem, 3.6vw, 2.6rem);
   border-top: .03125rem solid var(--g-line); }
@@ -165,7 +171,7 @@ html.js .plate.is-lit .plate_sub  { transition-delay: .34s; }
   display: grid; place-items: center;
   transition: transform 1s cubic-bezier(.76,0,.24,1); will-change: transform; }
 .arrival_in { display: grid; justify-items: center; gap: .75rem; }
-.arrival_a { font: 400 clamp(1.5rem, 3.4vw, 2.4rem)/1 var(--disp); letter-spacing: .3em; text-indent: .3em; color: var(--g-ink); }
+.arrival_a { font: 300 clamp(1.6rem, 3.7vw, 2.6rem)/1 var(--mark); letter-spacing: .3em; text-indent: .3em; color: var(--g-ink); }
 .arrival_c { font: 500 .56rem/1 var(--sans); letter-spacing: .34em; text-indent: .34em; text-transform: uppercase; color: var(--g-soft); }
 .arrival_rule { position: relative; display: block; width: min(42vw, 15rem); height: 1px; background: var(--g-line); margin-top: .9rem; }
 .arrival_rule i { position: absolute; inset: 0; background: var(--birch); transform: scaleX(0); transform-origin: 0 50%;
@@ -195,7 +201,7 @@ body.scrolled .nav_bg { opacity: 1; }
 .nav_skip:focus-visible { opacity: 1; pointer-events: auto; }
 .nav_logo { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) scale(1); transform-origin: 50% 50%; display: grid; justify-items: center; gap: .3rem; text-align: center; transition: transform .6s cubic-bezier(.65,0,.35,1); }
 body.scrolled .nav_logo { transform: translate(-50%, -50%) scale(.62); }
-.nav_logo_a { font: 400 1.6rem/1 var(--disp); letter-spacing: .3em; text-indent: .3em; }
+.nav_logo_a { font: 300 1.72rem/1 var(--mark); letter-spacing: .3em; text-indent: .3em; }
 .nav_logo_c { font: 500 .52rem/1 var(--sans); letter-spacing: .34em; text-indent: .34em; text-transform: uppercase; opacity: .7; white-space: nowrap; }
 .nav_right { display: flex; align-items: center; gap: 1.5rem; }
 .nav_book { font: 500 .74rem/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; border-bottom: 1px solid currentColor; padding-bottom: .28rem; }

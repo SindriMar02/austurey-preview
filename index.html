@@ -13,7 +13,7 @@
 <link rel="preload" href="assets/fonts/Switzer-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
 <link rel="apple-touch-icon" href="assets/img/favicon-180.png">
-<link rel="stylesheet" href="styles.css?v=8b8d0c5e">
+<link rel="stylesheet" href="styles.css?v=2fde628a">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"LodgingBusiness","@id":"https://austurey.is/#business","name":"Austurey Gisting","url":"https://austurey.is","email":"austurey@austurey.is","telephone":"+354 773 0378","address":{"@type":"PostalAddress","streetAddress":"Austurey 1","addressLocality":"Bláskógabyggð","postalCode":"840","addressCountry":"IS"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"9.7","bestRating":"10","reviewCount":"390"},"amenityFeature":[{"@type":"LocationFeatureSpecification","name":"Fishing","value":true},{"@type":"LocationFeatureSpecification","name":"EV charger","value":true},{"@type":"LocationFeatureSpecification","name":"Free parking","value":true}],"containsPlace":[{"@type":"Accommodation","name":"Austurey Lakefront Villa","floorSize":{"@type":"QuantitativeValue","value":184,"unitCode":"MTK"},"numberOfBedrooms":4,"occupancy":{"@type":"QuantitativeValue","maxValue":8},"amenityFeature":[{"@type":"LocationFeatureSpecification","name":"Sauna","value":true},{"@type":"LocationFeatureSpecification","name":"Hot tub","value":true},{"@type":"LocationFeatureSpecification","name":"Kayaks","value":true}]},{"@type":"Accommodation","name":"Austurey Cottage","occupancy":{"@type":"QuantitativeValue","maxValue":2},"amenityFeature":[{"@type":"LocationFeatureSpecification","name":"Lake view","value":true},{"@type":"LocationFeatureSpecification","name":"Terrace","value":true}]}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is the fishing permit really included?","acceptedAnswer":{"@type":"Answer","text":"Guests who book the Lakefront Villa directly through Austurey receive complimentary fishing permits for Lake Apavatn. Cottage guests who book direct get a special discount on permits. Rods and kayaks are on site."}},{"@type":"Question","name":"When is the fishing season?","acceptedAnswer":{"@type":"Answer","text":"Lake Apavatn from 1 February to 10 October; the Hólaá river from 1 April to 24 September. River permits are limited each day, so book those in advance."}},{"@type":"Question","name":"Can we see the northern lights?","acceptedAnswer":{"@type":"Answer","text":"From late August until April, on clear nights, from the cottages and the villa. There is very little light around the farm."}},{"@type":"Question","name":"Is there a restaurant?","acceptedAnswer":{"@type":"Answer","text":"No. Every cottage has a kitchenette and the villa a full kitchen; Laugarvatn, ten kilometres away, has restaurants and shops."}},{"@type":"Question","name":"Can I bring a pet?","acceptedAnswer":{"@type":"Answer","text":"Pets are not allowed."}}]}]}</script>
 </head>
 <body class="at-hero" data-ground="day">
@@ -132,32 +132,33 @@
   </section>
 
   <!-- ═══ 3 · THE STAYS (KUBE rooms machine: tags, count, deep links) ═══ -->
-  <!-- ═══ 3 · THE PICKER · one stage, nine names ═══ -->
-  <section class="pick" id="stays">
-    <div class="pick_wash" aria-hidden="true">
+  <!-- ═══ 3 · THE GALLERY · nine cards, and the collection behind them ═══ -->
+  <section class="gal" id="stays">
+    <div class="gal_wash" aria-hidden="true">
       <img data-img="wash-turf" data-w="1440 2560" sizes="100vw" alt="" loading="lazy">
     </div>
 
-    <div class="pick_in">
-      <header class="pick_head">
+    <div class="gal_in">
+      <header class="gal_head">
         <p class="eyebrow rev">The stays</p>
         <h2 class="h2" data-reveal data-split="lines">One villa, eight cottages, nine places to sleep by the water.</h2>
-        <p class="pick_note rev">The eight cottages are identical: for two, a 160 cm bed, a kitchenette, a heated veranda and the lake in front. The villa is the one that differs.</p>
+        <p class="gal_note rev">The eight cottages are identical: for two, a 160 cm bed, a kitchenette, a heated veranda and the lake in front. The villa is the one that differs. Open any photograph to see the whole collection.</p>
       </header>
 
-      <div class="pick_body">
-        <div class="pick_stage" id="pickStage"></div>
-
-        <div class="pick_side">
-          <ol class="pick_list" id="pickList"></ol>
-          <div class="pick_foot">
-            <p class="pick_facts" id="pickFacts" aria-live="polite"></p>
-            <a class="pick_go" id="pickGo" href="#" target="_blank" rel="noopener">Book</a>
-          </div>
-        </div>
-      </div>
+      <div class="gal_grid" id="galGrid"></div>
     </div>
   </section>
+
+  <!-- the lightbox -->
+  <div class="lbox" id="lbox" role="dialog" aria-modal="true" aria-label="Photographs of Austurey" hidden>
+    <button type="button" class="lbox_close" aria-label="Close">&#215;</button>
+    <figure class="lbox_fig">
+      <img class="lbox_img" alt="" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="1" height="1">
+      <figcaption class="lbox_cap"></figcaption>
+    </figure>
+    <button type="button" class="lbox_nav lbox_nav--prev" data-prev aria-label="Previous photograph"></button>
+    <button type="button" class="lbox_nav lbox_nav--next" data-next aria-label="Next photograph"></button>
+  </div>
 
   <!-- ═══ 4 · INCLUDED WHEN YOU BOOK HERE (the SAND split) ═══ -->
   <section class="incl" id="included">
@@ -335,6 +336,6 @@
 <script src="assets/vendor/ScrollTrigger.min.js"></script>
 <script src="assets/vendor/lenis.min.js"></script>
 <script src="assets/vendor/staypicker.js"></script>
-<script src="app.js?v=5a89b3d1"></script>
+<script src="app.js?v=224609c3"></script>
 </body>
 </html>

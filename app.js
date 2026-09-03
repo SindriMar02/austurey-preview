@@ -107,80 +107,115 @@
      component this one has to end in a booking. */
   var GODO_COTT = 'https://property.godo.is/booking2.php?propid=57635&referer=austurey.is';
   var GODO_VILLA = 'https://property.godo.is/booking2.php?propid=197629&referer=austurey.is';
+
+  /* The photographs the cards use are the 3000px Booking.com originals from
+     _harvest/booking-cottages, not the small site uploads the build shipped
+     with. Two of them, the auroras, were sitting unused in the harvest and are
+     the best pictures the property has.
+
+     One honest limit: the harvest is a POOL of cottage photography, not eight
+     labelled sets, so no photograph can truthfully be called Cottage 3's. The
+     eight are identical anyway, which the section says out loud, so each card
+     carries a different view of the same cottage rather than a claim about a
+     specific one, and the lightbox is the collection. */
   var STAYS = [
     { name: 'Lakefront Villa', img: 'villa-porch', w: '720 1440 2560', villa: true,
-      facts: '184 m² · four bedrooms · sleeps eight · two bathrooms · sauna, hot tub and the kayaks',
+      facts: '184 m² · four bedrooms · sleeps eight · sauna, hot tub and the kayaks',
       alt: 'The villa terrace with the hot tub, the lake beyond', url: GODO_VILLA },
+    { name: 'Cottage 1', img: 'ct-glass',   w: '720 1440 2560', p: '1080', facts: 'for two · 160 cm bed · kitchenette · heated veranda', alt: 'A cottage from the drive, the glass front onto the field', url: GODO_COTT },
+    { name: 'Cottage 2', img: 'ct-turf',    w: '720 1440 2560', p: '1080', facts: 'for two · 160 cm bed · kitchenette · heated veranda', alt: 'A cottage set into the turf with the mountains behind', url: GODO_COTT },
+    { name: 'Cottage 3', img: 'ct-sheep',   w: '720 1440 2560', p: '1080', facts: 'for two · 160 cm bed · kitchenette · heated veranda', alt: 'Sheep grazing in front of a cottage in summer', url: GODO_COTT },
+    { name: 'Cottage 4', img: 'ct-snow',    w: '720 1440 2560', p: '1080', facts: 'for two · 160 cm bed · kitchenette · heated veranda', alt: 'The cottages in deep snow, paths cut between them', url: GODO_COTT },
+    { name: 'Cottage 5', img: 'ct-aurora',  w: '720 1440 2560', p: '1080', facts: 'for two · 160 cm bed · kitchenette · heated veranda', alt: 'The northern lights over a cottage at night', url: GODO_COTT },
+    { name: 'Cottage 6', img: 'ct-winter',  w: '720 1440 2560', p: '1080', facts: 'for two · 160 cm bed · kitchenette · heated veranda', alt: 'A cottage in winter light with the frozen lake beyond', url: GODO_COTT },
+    { name: 'Cottage 7', img: 'ct-terrace', w: '720 1440 2560', p: '1080', facts: 'for two · 160 cm bed · kitchenette · heated veranda', alt: 'The heated veranda with the table and the grill', url: GODO_COTT },
+    { name: 'Cottage 8', img: 'ct-bed',     w: '720 1440 2560', p: '1080', facts: 'for two · 160 cm bed · kitchenette · heated veranda', alt: 'The bedroom of a cottage, made up', url: GODO_COTT }
   ];
-  var cottImgs = ['cott-glass', 'cott-cabin', 'cott-cabin-sheep', 'cott-terrace', 'cott-winter', 'hero-sheep', 'cott-corner', 'cott-bed'];
-  /* the ladder each file actually has on disk, not an assumed one */
-  var cottW = ['720 1440 2560', '720 1440 2560', '720 1440 2560', '720 1440', '720 1440 2560', '720 1440', '720 1440', '720 1440'];
-  var cottP = ['', '720 1080', '720 1080', '', '', '', '720', ''];
-  var cottAlts = ['The glass front of a cottage', 'A cottage in the field at dusk', 'Sheep in front of a cottage', 'A cottage terrace with the grill', 'A cottage in the snow', 'A cottage with sheep grazing in front', 'A cottage corner and the lake', 'A cottage bedroom'];
-  for (var ci = 0; ci < 8; ci++) {
-    STAYS.push({ name: 'Cottage ' + (ci + 1), img: cottImgs[ci], alt: cottAlts[ci], w: cottW[ci], p: cottP[ci],
-      facts: 'for two · 160 cm bed · kitchenette · heated veranda · the lake in front', url: GODO_COTT });
-  }
+  /* the lightbox carries the whole collection, cards included */
+  var GAL = ['ct-aurora', 'ct-nightwide', 'ct-glass', 'ct-turf', 'ct-sheep', 'ct-snow',
+             'ct-winter', 'ct-row', 'ct-terrace', 'ct-window', 'ct-bed', 'ct-sign'];
+  var GAL_ALT = ['The northern lights over a cottage', 'The lights over the whole row at night',
+    'The glass front of a cottage', 'A cottage set into the turf', 'Sheep in front of a cottage',
+    'The cottages in deep snow', 'A cottage in winter light', 'The row of cottages along the field',
+    'The heated veranda and the grill', 'The window wall of a cottage interior',
+    'A cottage bedroom, made up', 'The Austurey Cottages sign on the road'];
 
-  (function picker() {
-    var stage = document.getElementById('pickStage');
-    var list = document.getElementById('pickList');
-    if (!stage || !list) return;
+  (function gallery() {
+    var grid = document.getElementById('galGrid');
+    if (!grid) return;
 
-    stage.innerHTML = STAYS.map(function (s, i) {
-      return '<figure class="pick_shot' + (i === 0 ? ' is-on' : '') + '" data-i="' + i + '">' +
-        '<img data-img="' + s.img + '" data-w="' + s.w + '"' + (s.p ? ' data-p="' + s.p + '"' : '') + ' sizes="(max-width: 900px) 100vw, 56vw" alt="' + s.alt + '" loading="lazy">' +
-        '</figure>';
+    grid.innerHTML = STAYS.map(function (s, i) {
+      return '<article class="gcard' + (s.villa ? ' gcard--villa' : '') + '">' +
+        '<button type="button" class="gcard_shot" data-lb="' + (s.villa ? 0 : GAL.indexOf(s.img)) + '" aria-label="Open the photographs, from ' + s.name + '">' +
+          '<img data-img="' + s.img + '" data-w="' + s.w + '"' + (s.p ? ' data-p="' + s.p + '"' : '') +
+          ' sizes="(max-width: 700px) 92vw, (max-width: 1100px) 46vw, 30vw" alt="' + s.alt + '" loading="lazy">' +
+        '</button>' +
+        '<div class="gcard_foot">' +
+          '<h3 class="gcard_name">' + s.name + '</h3>' +
+          '<p class="gcard_facts">' + s.facts + '</p>' +
+          '<a class="gcard_go" href="' + s.url + '" target="_blank" rel="noopener">Book<span aria-hidden="true"></span></a>' +
+        '</div>' +
+      '</article>';
     }).join('');
+    wireLazy(grid);
 
-    list.innerHTML = STAYS.map(function (s, i) {
-      return '<li class="pick_row' + (s.villa ? ' is-villa' : '') + (i === 0 ? ' is-on' : '') + '">' +
-        '<button type="button" data-i="' + i + '" aria-pressed="' + (i === 0) + '">' +
-          '<span class="pick_no">' + String(i + 1).padStart(2, '0') + '</span>' +
-          '<span class="pick_name">' + s.name + '</span>' +
-          '<span class="pick_line" aria-hidden="true"></span>' +
-        '</button></li>';
-    }).join('');
+    /* the lightbox */
+    var lb = document.getElementById('lbox');
+    if (!lb) return;
+    var lbImg = lb.querySelector('.lbox_img');
+    var lbCap = lb.querySelector('.lbox_cap');
+    var at = 0, lastFocus = null;
 
-    var shots = [].slice.call(stage.querySelectorAll('.pick_shot'));
-    var rows = [].slice.call(list.querySelectorAll('.pick_row'));
-    var btns = [].slice.call(list.querySelectorAll('button'));
-    var factsEl = document.getElementById('pickFacts');
-    var goEl = document.getElementById('pickGo');
-    /* -1, not 0: show() returns early when the index is already current, so
-       starting at 0 meant the opening lock(0) never wrote the first facts line
-       and the panel loaded blank. */
-    var current = -1, locked = 0;
-
-    function show(i) {
-      if (i === current) return;
-      current = i;
-      shots.forEach(function (f, j) { f.classList.toggle('is-on', j === i); });
-      rows.forEach(function (r, j) { r.classList.toggle('is-hot', j === i); });
-      if (factsEl) factsEl.textContent = STAYS[i].facts;
+    function paint() {
+      lbImg.removeAttribute('width'); lbImg.removeAttribute('height');
+      lbImg.src = 'assets/img/' + GAL[at] + '@1440.webp';
+      lbImg.srcset = 'assets/img/' + GAL[at] + '@720.webp 720w, assets/img/' + GAL[at] + '@1440.webp 1440w, assets/img/' + GAL[at] + '@2560.webp 2560w';
+      lbImg.sizes = '92vw';
+      lbImg.alt = GAL_ALT[at];
+      lbCap.textContent = (at + 1) + ' / ' + GAL.length + ' · ' + GAL_ALT[at];
     }
-    function lock(i) {
-      locked = i;
-      btns.forEach(function (b, j) { b.setAttribute('aria-pressed', String(j === i)); });
-      rows.forEach(function (r, j) { r.classList.toggle('is-on', j === i); });
-      if (goEl) { goEl.href = STAYS[i].url; goEl.textContent = 'Book ' + STAYS[i].name.toLowerCase(); }
-      show(i);
+    function open(i) {
+      at = Math.max(0, Math.min(GAL.length - 1, i));
+      lastFocus = document.activeElement;
+      paint(); lb.hidden = false;
+      requestAnimationFrame(function () { lb.classList.add('is-on'); });
+      root.classList.add('lbox-on');
+      lb.querySelector('.lbox_close').focus();
     }
-    btns.forEach(function (b, i) {
-      /* pointerenter, not mouseover: a touch device must not preview on the
-         way to a tap, it should only ever commit on the tap itself */
-      b.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') show(i); });
-      b.addEventListener('focus', function () { show(i); });
-      b.addEventListener('click', function () { lock(i); });
+    function close() {
+      lb.classList.remove('is-on');
+      root.classList.remove('lbox-on');
+      setTimeout(function () { lb.hidden = true; }, 320);
+      if (lastFocus) lastFocus.focus();
+    }
+    function step(d) { at = (at + d + GAL.length) % GAL.length; paint(); }
+
+    grid.addEventListener('click', function (e) {
+      var b = e.target.closest('.gcard_shot'); if (!b) return;
+      open(parseInt(b.dataset.lb, 10) || 0);
     });
-    list.addEventListener('pointerleave', function () { show(locked); });
-    lock(0);
-    wireLazy(stage);
+    lb.querySelector('.lbox_close').addEventListener('click', close);
+    lb.querySelector('[data-prev]').addEventListener('click', function () { step(-1); });
+    lb.querySelector('[data-next]').addEventListener('click', function () { step(1); });
+    lb.addEventListener('click', function (e) { if (e.target === lb) close(); });
+    document.addEventListener('keydown', function (e) {
+      if (lb.hidden) return;
+      if (e.key === 'Escape') close();
+      else if (e.key === 'ArrowLeft') step(-1);
+      else if (e.key === 'ArrowRight') step(1);
+      else if (e.key === 'Tab') {
+        /* three controls, so the trap is small enough to write by hand */
+        var f = [].slice.call(lb.querySelectorAll('button'));
+        var i = f.indexOf(document.activeElement);
+        e.preventDefault();
+        f[(i + (e.shiftKey ? -1 : 1) + f.length) % f.length].focus();
+      }
+    });
   })();
 
   /* the picker rows write in once, and the painted ground drifts behind them */
   (function pickMotion() {
-    var sec = document.querySelector('.pick');
+    var sec = document.querySelector('.gal');
     if (!sec) return;
     new IntersectionObserver(function (es, o) {
       es.forEach(function (e) { if (e.isIntersecting) { sec.classList.add('is-in'); o.disconnect(); } });
@@ -435,9 +470,9 @@
         gsap.fromTo(img, { y: '0rem' }, { y: '-4rem', ease: 'none', scrollTrigger: { trigger: wrap, start: 'top 70%', end: 'bottom 30%', scrub: true } });
       });
       /* the painted ground behind the picker drifts against the list */
-      var pw = document.querySelector('.pick_wash img');
+      var pw = document.querySelector('.gal_wash img');
       if (pw) gsap.fromTo(pw, { y: '-3rem', scale: 1.06 }, { y: '3rem', scale: 1.12, ease: 'none',
-        scrollTrigger: { trigger: '.pick', start: 'top bottom', end: 'bottom top', scrub: true } });
+        scrollTrigger: { trigger: '.gal', start: 'top bottom', end: 'bottom top', scrub: true } });
 
       /* the painting drifts as the plate scrolls away, slower than the page */
       var hp = document.querySelector('.plate_img');

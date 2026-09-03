@@ -204,7 +204,9 @@
     body.classList.toggle('no-scroll', open);
     burger.setAttribute('aria-expanded', String(open));
     if (open) menu.removeAttribute('hidden');
-    menu.querySelectorAll('.menu_links a').forEach(function (a, i) { a.style.transitionDelay = open ? (0.08 + i * 0.055) + 's' : '0s'; });
+    /* The links now wait for the ink column to arrive before they write
+       themselves in, and 70ms apart rather than 55 so the cascade is legible. */
+    menu.querySelectorAll('.menu_links a').forEach(function (a, i) { a.style.transitionDelay = open ? (0.22 + i * 0.07) + 's' : '0s'; });
     if (window.__lenis) { open ? window.__lenis.stop() : window.__lenis.start(); }
   }
   if (burger && menu) {

@@ -156,14 +156,6 @@ body.menu-open .mobilebar_wrap { visibility: hidden; }
 .menu_links li:first-child { border-top: .03125rem solid #2B3539; }
 .menu_links a { position: relative; display: flex; align-items: baseline; gap: 1rem; padding: clamp(.85rem, 2.2vh, 1.4rem) 0; transform: translateY(105%); transition: transform .8s var(--expo), color .3s; }
 body.menu-open .menu_links a { transform: none; }
-/* They all moved at once, which reads as one slab rather than a list being
-   written. 70ms apart is enough to feel deliberate without feeling slow. */
-body.menu-open .menu_links li:nth-child(1) a { transition-delay: .10s; }
-body.menu-open .menu_links li:nth-child(2) a { transition-delay: .17s; }
-body.menu-open .menu_links li:nth-child(3) a { transition-delay: .24s; }
-body.menu-open .menu_links li:nth-child(4) a { transition-delay: .31s; }
-body.menu-open .menu_links li:nth-child(5) a { transition-delay: .38s; }
-body.menu-open .menu_links li:nth-child(6) a { transition-delay: .45s; }
 .menu_foot { opacity: 0; transform: translateY(1rem); transition: opacity .6s var(--ease), transform .6s var(--ease); }
 body.menu-open .menu_foot { opacity: 1; transform: none; transition-delay: .5s; }
 .menu_links span { font: 400 clamp(1.5rem, 3.2vw, 2.4rem)/1.1 var(--disp); }

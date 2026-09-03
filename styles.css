@@ -161,6 +161,93 @@ html.js .plate.is-lit .plate_sub  { transition-delay: .34s; }
   .leaf_meta { gap: 1.4rem; }
 }
 
+
+/* ---------- 3 · THE PICKER ----------
+   Nine near-identical cards down a page is a catalogue. One stage and nine
+   names is a choice. The painted turf sits behind it at low opacity so the
+   section has the same hand as the plate without competing with the
+   photographs, which stay real: a guest choosing a cottage has to see the
+   actual cottage, so only the GROUND is painted, never the product. */
+.pick { position: relative; background: var(--night); color: #E9EBE6;
+  padding-block: clamp(5rem, 13vh, 10rem); overflow: clip; isolation: isolate; }
+.pick_wash { position: absolute; inset: -12% 0 auto 0; height: 62%; z-index: 0; pointer-events: none;
+  opacity: .30; mix-blend-mode: screen; }
+.pick_wash img { width: 100%; height: 100%; object-fit: cover; display: block;
+  mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.55) 52%, transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.55) 52%, transparent 100%); }
+.pick_in { position: relative; z-index: 1; width: min(100% - 2.4rem, 82rem); margin-inline: auto; }
+.pick_head { max-width: 46rem; }
+.pick_head .h2 { color: #F2F1EA; }
+.pick_note { margin-top: 1.4rem; max-width: 40rem; font: 400 .95rem/1.7 var(--sans); color: #9AA39B; }
+
+.pick_body { display: grid; grid-template-columns: minmax(0, 1.32fr) minmax(20rem, .68fr);
+  gap: clamp(1.6rem, 4vw, 3.4rem); align-items: start; margin-top: clamp(2.6rem, 6vw, 4.4rem); }
+
+/* the stage: every shot stacked, the live one wiped in */
+.pick_stage { position: relative; aspect-ratio: 4/3; overflow: clip; background: #0e1416; }
+.pick_shot { position: absolute; inset: 0; margin: 0; overflow: clip;
+  clip-path: inset(0 0 0 100%); transition: clip-path 1.05s cubic-bezier(.76,0,.24,1); }
+.pick_shot.is-on { clip-path: inset(0 0 0 0%); }
+.pick_shot img { width: 100%; height: 100%; object-fit: cover; display: block;
+  transform: scale(1.05); transition: transform 1.4s cubic-bezier(.76,0,.24,1); }
+.pick_shot.is-on img { transform: scale(1); }
+
+/* the list */
+.pick_side { display: flex; flex-direction: column; }
+.pick_list { list-style: none; margin: 0; padding: 0; counter-reset: none; }
+.pick_row { border-bottom: .03125rem solid rgba(233,235,230,.14); }
+.pick_row:first-child { border-top: .03125rem solid rgba(233,235,230,.14); }
+.pick_row button { position: relative; width: 100%; display: grid;
+  grid-template-columns: 2.6rem 1fr auto; align-items: center; gap: .9rem;
+  padding: .78rem .2rem; background: none; border: 0; cursor: pointer; text-align: left;
+  color: rgba(233,235,230,.62); min-height: 44px;
+  transition: color .45s var(--ease), padding-left .5s cubic-bezier(.76,0,.24,1); }
+.pick_no { font: 500 .58rem/1 var(--sans); letter-spacing: .16em; color: rgba(233,235,230,.38);
+  transition: color .45s var(--ease); }
+.pick_name { font: 400 clamp(1.05rem, 1.7vw, 1.5rem)/1.15 var(--disp); }
+.pick_line { width: 0; height: 1px; background: var(--birch); justify-self: end;
+  transition: width .55s cubic-bezier(.76,0,.24,1); }
+.pick_row.is-hot button { color: #F2F1EA; padding-left: .55rem; }
+.pick_row.is-hot .pick_no { color: var(--birch); }
+.pick_row.is-hot .pick_line { width: clamp(1.2rem, 3vw, 2.4rem); }
+.pick_row.is-on button { color: #F2F1EA; }
+.pick_row.is-on .pick_no { color: var(--birch); }
+.pick_row.is-villa .pick_name { font-style: italic; }
+
+.pick_foot { margin-top: clamp(1.4rem, 3vw, 2.2rem); display: grid; gap: 1rem; }
+.pick_facts { margin: 0; min-height: 3.2em; font: 400 .88rem/1.65 var(--sans); color: #9AA39B; }
+.pick_go { justify-self: start; display: inline-flex; align-items: center; min-height: 2.9rem;
+  padding: .7rem 1.4rem; border-radius: .25rem; background: var(--birch); color: var(--on-birch);
+  font: 500 .74rem/1 var(--sans); letter-spacing: .12em; text-transform: uppercase;
+  transition: background .35s var(--ease), transform .35s cubic-bezier(.76,0,.24,1); }
+@media (hover: hover) and (pointer: fine) {
+  .pick_go:hover { background: var(--birch-hi); transform: translateY(-1px); }
+}
+
+/* the rows write themselves in as the section arrives */
+html.js .pick_row { opacity: 0; transform: translateY(.7rem); }
+html.js .pick.is-in .pick_row { opacity: 1; transform: none;
+  transition: opacity .7s var(--ease), transform .7s cubic-bezier(.76,0,.24,1); }
+html.js .pick.is-in .pick_row:nth-child(1) { transition-delay: .05s }
+html.js .pick.is-in .pick_row:nth-child(2) { transition-delay: .10s }
+html.js .pick.is-in .pick_row:nth-child(3) { transition-delay: .15s }
+html.js .pick.is-in .pick_row:nth-child(4) { transition-delay: .20s }
+html.js .pick.is-in .pick_row:nth-child(5) { transition-delay: .25s }
+html.js .pick.is-in .pick_row:nth-child(6) { transition-delay: .30s }
+html.js .pick.is-in .pick_row:nth-child(7) { transition-delay: .35s }
+html.js .pick.is-in .pick_row:nth-child(8) { transition-delay: .40s }
+html.js .pick.is-in .pick_row:nth-child(9) { transition-delay: .45s }
+
+@media (max-width: 900px) {
+  .pick_body { grid-template-columns: 1fr; }
+  .pick_stage { aspect-ratio: 3/2; }
+  .pick_name { font-size: 1.12rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pick_shot { transition: none; }
+  html.js .pick_row { opacity: 1; transform: none; }
+}
+
 /* ---------- arrival curtain ---------- */
 /* Every other build in this family opens on one and Austurey opened on a raw
    hero, which is the moment the design is judged. Cream ground so there is no

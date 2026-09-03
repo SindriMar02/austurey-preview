@@ -96,66 +96,92 @@
   }
   wireLazy(document);
 
-  /* ---------- the stays: one villa, eight cottages, from their own pages ---------- */
+  /* ---------- the stays: the plate picker ----------
+     Nine near-identical cards down a page is a catalogue, not a choice. The
+     eight cottages differ only in the photograph, so the list carries the
+     names and one stage carries the picture: move through the names and the
+     picture wipes. Behaviour taken from 21st.dev "Slideshow" (25998), which
+     does exactly this with staggered text indicators and a clip-path reveal;
+     the code there is React, this build is vanilla, so only the mechanism
+     crosses over. Selection is explicit and sticky, because unlike that
+     component this one has to end in a booking. */
   var GODO_COTT = 'https://property.godo.is/booking2.php?propid=57635&referer=austurey.is';
   var GODO_VILLA = 'https://property.godo.is/booking2.php?propid=197629&referer=austurey.is';
   var STAYS = [
-    { name: 'Austurey Lakefront Villa', img: 'villa-porch', villa: true,
-      facts: '184 m² · four bedrooms · sleeps 8 · two bathrooms',
-      tags: ['Sleeps 8', 'Sauna', 'Hot tub', 'Kayaks', 'EV charger'],
-      alt: 'The villa’s terrace with the hot tub, the lake beyond', url: GODO_VILLA },
+    { name: 'Lakefront Villa', img: 'villa-porch', w: '720 1440 2560', villa: true,
+      facts: '184 m² · four bedrooms · sleeps eight · two bathrooms · sauna, hot tub and the kayaks',
+      alt: 'The villa terrace with the hot tub, the lake beyond', url: GODO_VILLA },
   ];
   var cottImgs = ['cott-glass', 'cott-cabin', 'cott-cabin-sheep', 'cott-terrace', 'cott-winter', 'hero-sheep', 'cott-corner', 'cott-bed'];
+  /* the ladder each file actually has on disk, not an assumed one */
+  var cottW = ['720 1440 2560', '720 1440 2560', '720 1440 2560', '720 1440', '720 1440 2560', '720 1440', '720 1440', '720 1440'];
+  var cottP = ['', '720 1080', '720 1080', '', '', '', '720', ''];
   var cottAlts = ['The glass front of a cottage', 'A cottage in the field at dusk', 'Sheep in front of a cottage', 'A cottage terrace with the grill', 'A cottage in the snow', 'A cottage with sheep grazing in front', 'A cottage corner and the lake', 'A cottage bedroom'];
-  for (var i = 0; i < 8; i++) {
-    STAYS.push({ name: 'Cottage ' + (i + 1), img: cottImgs[i], alt: cottAlts[i],
-      facts: 'for two · 160 cm bed · kitchenette · heated veranda · lake view',
-      tags: ['Sleeps 2', 'EV charger'], url: GODO_COTT });
-  }
-  var host = document.getElementById('stayList');
-  if (host) {
-    host.innerHTML = STAYS.map(function (s) {
-      return '<article class="stay' + (s.villa ? ' stay--villa' : '') + '" data-tags="' + s.tags.join('|') + '">' +
-        '<div class="stay_media"><img data-img="' + s.img + '" data-w="' + (s.villa ? '720 1440 2560' : '720 1440') + '" sizes="' + (s.villa ? '60vw' : '30vw') + '" data-sm="' + (s.villa ? '94vw' : '47vw') + '" alt="' + s.alt + '" loading="lazy"></div>' +
-        '<div class="stay_type"><h3 class="stay_name">' + s.name + '</h3>' +
-        '<p class="stay_facts">' + s.facts + '</p>' +
-        '<div class="stay_tags">' + s.tags.map(function (t) { return '<span>' + t + '</span>'; }).join('') + '</div>' +
-        '<a class="stay_more" href="' + s.url + '" target="_blank" rel="noopener">Book direct</a></div></article>';
-    }).join('') + '<p class="stays_empty" id="staysEmpty" hidden>No stay has all of those. Take one filter off.</p>';
-    wireLazy(host);
+  for (var ci = 0; ci < 8; ci++) {
+    STAYS.push({ name: 'Cottage ' + (ci + 1), img: cottImgs[ci], alt: cottAlts[ci], w: cottW[ci], p: cottP[ci],
+      facts: 'for two · 160 cm bed · kitchenette · heated veranda · the lake in front', url: GODO_COTT });
   }
 
-  /* tags: uncheckable radios, count that pluralises itself, deep link in the hash */
-  (function tags() {
-    var bar = document.getElementById('tags'); if (!bar) return;
-    var buttons = Array.prototype.slice.call(bar.querySelectorAll('.tag'));
-    var count = document.getElementById('staysCount');
-    var cards = Array.prototype.slice.call(document.querySelectorAll('.stay'));
-    var empty = document.getElementById('staysEmpty');
-    var active = [];
-    function apply() {
-      var shown = 0;
-      cards.forEach(function (c) {
-        var have = c.dataset.tags.split('|');
-        var ok = active.every(function (t) { return have.indexOf(t) > -1; });
-        c.hidden = !ok; if (ok) shown++;
-      });
-      if (count) count.textContent = shown + (shown === 1 ? ' stay' : ' stays');
-      if (empty) empty.hidden = shown > 0;
-      buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(active.indexOf(b.dataset.tag) > -1)); });
-      var h = active.length ? '#stays?tags=' + active.map(encodeURIComponent).join(',') : (location.hash.indexOf('#stays') === 0 ? '#stays' : location.hash);
-      if (location.hash !== h) history.replaceState(null, '', h || location.pathname);
+  (function picker() {
+    var stage = document.getElementById('pickStage');
+    var list = document.getElementById('pickList');
+    if (!stage || !list) return;
+
+    stage.innerHTML = STAYS.map(function (s, i) {
+      return '<figure class="pick_shot' + (i === 0 ? ' is-on' : '') + '" data-i="' + i + '">' +
+        '<img data-img="' + s.img + '" data-w="' + s.w + '"' + (s.p ? ' data-p="' + s.p + '"' : '') + ' sizes="(max-width: 900px) 100vw, 56vw" alt="' + s.alt + '" loading="lazy">' +
+        '</figure>';
+    }).join('');
+
+    list.innerHTML = STAYS.map(function (s, i) {
+      return '<li class="pick_row' + (s.villa ? ' is-villa' : '') + (i === 0 ? ' is-on' : '') + '">' +
+        '<button type="button" data-i="' + i + '" aria-pressed="' + (i === 0) + '">' +
+          '<span class="pick_no">' + String(i + 1).padStart(2, '0') + '</span>' +
+          '<span class="pick_name">' + s.name + '</span>' +
+          '<span class="pick_line" aria-hidden="true"></span>' +
+        '</button></li>';
+    }).join('');
+
+    var shots = [].slice.call(stage.querySelectorAll('.pick_shot'));
+    var rows = [].slice.call(list.querySelectorAll('.pick_row'));
+    var btns = [].slice.call(list.querySelectorAll('button'));
+    var factsEl = document.getElementById('pickFacts');
+    var goEl = document.getElementById('pickGo');
+    var current = 0, locked = 0;
+
+    function show(i) {
+      if (i === current) return;
+      current = i;
+      shots.forEach(function (f, j) { f.classList.toggle('is-on', j === i); });
+      rows.forEach(function (r, j) { r.classList.toggle('is-hot', j === i); });
+      if (factsEl) factsEl.textContent = STAYS[i].facts;
     }
-    buttons.forEach(function (b) {
-      b.addEventListener('click', function () {
-        var t = b.dataset.tag, i = active.indexOf(t);
-        if (i > -1) active.splice(i, 1); else active.push(t);
-        apply();
-      });
+    function lock(i) {
+      locked = i;
+      btns.forEach(function (b, j) { b.setAttribute('aria-pressed', String(j === i)); });
+      rows.forEach(function (r, j) { r.classList.toggle('is-on', j === i); });
+      if (goEl) { goEl.href = STAYS[i].url; goEl.textContent = 'Book ' + STAYS[i].name.toLowerCase(); }
+      show(i);
+    }
+    btns.forEach(function (b, i) {
+      /* pointerenter, not mouseover: a touch device must not preview on the
+         way to a tap, it should only ever commit on the tap itself */
+      b.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') show(i); });
+      b.addEventListener('focus', function () { show(i); });
+      b.addEventListener('click', function () { lock(i); });
     });
-    var m = location.hash.match(/tags=([^&]+)/);
-    if (m) active = m[1].split(',').map(decodeURIComponent).filter(function (t) { return buttons.some(function (b) { return b.dataset.tag === t; }); });
-    apply();
+    list.addEventListener('pointerleave', function () { show(locked); });
+    lock(0);
+    wireLazy(stage);
+  })();
+
+  /* the picker rows write in once, and the painted ground drifts behind them */
+  (function pickMotion() {
+    var sec = document.querySelector('.pick');
+    if (!sec) return;
+    new IntersectionObserver(function (es, o) {
+      es.forEach(function (e) { if (e.isIntersecting) { sec.classList.add('is-in'); o.disconnect(); } });
+    }, { rootMargin: '0px 0px -18% 0px' }).observe(sec);
   })();
 
   /* ---------- masked line reveal ---------- */
@@ -405,6 +431,11 @@
         var img = wrap.querySelector('img'); if (!img) return;
         gsap.fromTo(img, { y: '0rem' }, { y: '-4rem', ease: 'none', scrollTrigger: { trigger: wrap, start: 'top 70%', end: 'bottom 30%', scrub: true } });
       });
+      /* the painted ground behind the picker drifts against the list */
+      var pw = document.querySelector('.pick_wash img');
+      if (pw) gsap.fromTo(pw, { y: '-3rem', scale: 1.06 }, { y: '3rem', scale: 1.12, ease: 'none',
+        scrollTrigger: { trigger: '.pick', start: 'top bottom', end: 'bottom top', scrub: true } });
+
       /* the painting drifts as the plate scrolls away, slower than the page */
       var hp = document.querySelector('.plate_img');
       if (hp) gsap.fromTo(hp, { y: '-2.5rem' }, { y: '4rem', ease: 'none', scrollTrigger: { trigger: '.plate', start: 'top top', end: 'bottom top', scrub: true } });

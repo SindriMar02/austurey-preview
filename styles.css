@@ -61,6 +61,12 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
    the top of the screen. Otherwise the phone shows a pale bar above the
    photograph. */
 body.at-hero .tintplate { background: var(--night); }
+/* Two AUSTUREY marks stacked, the nav's directly above the plate's, read as a
+   duplicate rather than as chrome. The nav mark stands down while the plate
+   owns the screen and returns the moment the page scrolls, so the plate is one
+   composed image and the nav is still constant everywhere else. */
+body.at-hero .nav_logo { opacity: 0; pointer-events: none; }
+.nav_logo { transition: opacity .55s var(--ease), transform .6s cubic-bezier(.65,0,.35,1); }
 .tintplate { position: fixed; inset: 0 0 auto 0; height: 4px; z-index: 60; pointer-events: none; background-color: var(--g-bg); transition: background-color 1.6s cubic-bezier(.45,.05,.2,1); }
 .tintplate--foot { inset: auto 0 0 0; }
 

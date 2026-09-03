@@ -136,8 +136,11 @@ body.menu-open .nav_burger { border-color: rgba(233,235,230,.5); }
 @media (hover: hover) and (pointer: fine) {
   .nav_burger:hover { border-color: currentColor; }
 }
-.menu_scrim { position: absolute; inset: 0 0 auto 0; height: 13rem; pointer-events: none;
-  background: linear-gradient(180deg, rgba(19,25,28,.62) 0%, rgba(19,25,28,.28) 45%, rgba(19,25,28,0) 100%);
+/* Tuned by measurement, not by eye: at the first values the close control
+   composited to 2.75:1 on three of the five menu photographs, under the 3:1
+   floor for a UI control. These stops put it at 4.5:1 on the brightest one. */
+.menu_scrim { position: absolute; inset: 0 0 auto 0; height: 14rem; pointer-events: none;
+  background: linear-gradient(180deg, rgba(19,25,28,.85) 0%, rgba(19,25,28,.6) 38%, rgba(19,25,28,.18) 72%, rgba(19,25,28,0) 100%);
   opacity: 0; transition: opacity .5s var(--ease) .25s; }
 body.menu-open .menu_scrim { opacity: 1; }
 
